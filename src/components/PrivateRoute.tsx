@@ -1,13 +1,19 @@
+// src/components/PrivateRoute.tsx
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { isAuthenticated } from "../services/auth";
+import DashboardLayout from "../layout/DashboardLayout";
 
 interface PrivateRouteProps {
-  children?: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  return isAuthenticated() ? <>{children}</> : <Navigate to="/login" />;
+  return isAuthenticated() ? (
+    <DashboardLayout>{children}</DashboardLayout>
+  ) : (
+    <Navigate to="/login" />
+  );
 };
 
 export default PrivateRoute;

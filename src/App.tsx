@@ -9,14 +9,14 @@ import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import { isAuthenticated } from "./services/auth";
+import HealthPage from "./pages/HealthPage";
 
 const App: React.FC = () => (
   <Router>
     <Routes>
-      {/* Public Route */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/health" element={<HealthPage />} />
 
-      {/* Protected Dashboard Route */}
       <Route
         path="/"
         element={
@@ -26,7 +26,6 @@ const App: React.FC = () => (
         }
       />
 
-      {/* Catch-All Route for Unstated Paths */}
       <Route
         path="*"
         element={

@@ -21,28 +21,33 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <Form
-      onFinish={onFinish}
-      style={{ maxWidth: 300, margin: "0 auto", marginTop: "100px" }}
-    >
-      <Form.Item
-        name="username"
-        rules={[{ required: true, message: "Please input your username!" }]}
+    <>
+      <Form
+        onFinish={onFinish}
+        style={{ maxWidth: 300, margin: "0 auto", marginTop: "100px" }}
       >
-        <Input placeholder="Username" />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: "Please input your password!" }]}
-      >
-        <Input.Password placeholder="Password" />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" loading={loading} block>
-          Log in
-        </Button>
-      </Form.Item>
-    </Form>
+        <Form.Item
+          name="username"
+          rules={[{ required: true, message: "Please input your username!" }]}
+        >
+          <Input placeholder="Username" />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          rules={[{ required: true, message: "Please input your password!" }]}
+        >
+          <Input.Password placeholder="Password" />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" loading={loading} block>
+            Log in
+          </Button>
+        </Form.Item>
+      </Form>
+      <Button type="link" onClick={() => navigate("/health")}>
+        Go to Health Check Page
+      </Button>
+    </>
   );
 };
 
