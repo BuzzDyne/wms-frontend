@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form, Input, message, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
+import { TOAST_DURATION } from "../utils/constant";
 
 const { Title, Paragraph } = Typography;
 
@@ -23,14 +24,14 @@ const HealthPage: React.FC = () => {
 
       if (isServiceUp) {
         setStatus("Service is operational.");
-        message.success("Service is up and running!");
+        message.success("Service is up and running!", TOAST_DURATION);
       } else {
         setStatus("Service is down.");
-        message.error("Service is currently unavailable.");
+        message.error("Service is currently unavailable.", TOAST_DURATION);
       }
     } catch (error) {
       setStatus("Error checking service.");
-      message.error("Failed to check service status.");
+      message.error("Failed to check service status.", TOAST_DURATION);
     } finally {
       setLoading(false);
     }

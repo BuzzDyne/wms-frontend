@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import { login } from "../services/auth";
 import { useNavigate } from "react-router-dom";
+import { TOAST_DURATION } from "../utils/constant";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -12,10 +13,10 @@ const LoginPage: React.FC = () => {
     // Mock authentication
     if (values.username === "user" && values.password === "user") {
       login("mock-token");
-      message.success("Login successful!");
+      message.success("Login successful!", TOAST_DURATION);
       navigate("/");
     } else {
-      message.error("Invalid username or password");
+      message.error("Invalid username or password", TOAST_DURATION);
     }
     setLoading(false);
   };
@@ -43,10 +44,12 @@ const LoginPage: React.FC = () => {
             Log in
           </Button>
         </Form.Item>
+        <Form.Item>
+          <Button block type="link" onClick={() => navigate("/health")}>
+            Go to Health Check Page
+          </Button>
+        </Form.Item>
       </Form>
-      <Button type="link" onClick={() => navigate("/health")}>
-        Go to Health Check Page
-      </Button>
     </>
   );
 };

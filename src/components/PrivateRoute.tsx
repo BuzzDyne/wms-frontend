@@ -13,7 +13,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
     <DashboardLayout>{children}</DashboardLayout>
   ) : (
     <Navigate to="/login" />
-  );
+  );    
 };
 
 export default PrivateRoute;

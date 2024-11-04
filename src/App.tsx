@@ -11,21 +11,29 @@ import PrivateRoute from "./components/PrivateRoute";
 import { isAuthenticated } from "./services/auth";
 import HealthPage from "./pages/HealthPage";
 
+const routesConfig = [
+  { path: "/login", element: <LoginPage />, private: false },
+  { path: "/health", element: <HealthPage />, private: false },
+  { path: "/", element: <Dashboard />, private: true },
+  { path: "/lol", element: <div>lol</div>, private: true },
+];
+
 const App: React.FC = () => (
   <Router>
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/health" element={<HealthPage />} />
-
-      <Route
-        path="/"
-        element={
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
-        }
-      />
-
+      {routesConfig.map((route, index) => (
+        <Route
+          key={index}
+          path={route.path}
+          element={
+            route.private ? (
+              <PrivateRoute>{route.element}</PrivateRoute>
+            ) : (
+              route.element
+            )
+          }
+        />
+      ))}
       <Route
         path="*"
         element={

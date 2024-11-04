@@ -109,7 +109,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         >
           {/* Title on the left */}
           <Title level={3} style={{ margin: 0 }}>
-            Dashboard
+            CartexBlance WMS
           </Title>
 
           {/* Profile dropdown on the right */}
@@ -127,10 +127,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             </div>
           </Dropdown>
         </Header>
-        <Content style={{ margin: "0 16px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
-          </Breadcrumb>
+        <Content style={{ margin: "16px 16px" }}>
           <div
             style={{
               padding: 24,

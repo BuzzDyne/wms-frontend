@@ -1,24 +1,27 @@
 import React from "react";
-import { Button, message } from "antd";
+import { Button, message, Typography } from "antd";
 import { logout } from "../services/auth";
 import { useNavigate } from "react-router-dom";
+import { TOAST_DURATION } from "../utils/constant";
+
+const { Title } = Typography;
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    message.success("Logged out successfully");
+    message.success("Logged out successfully", TOAST_DURATION);
     navigate("/login");
   };
 
   return (
-    <div style={{ padding: 24 }}>
-      <h1>Dashboard</h1>
+    <>
+      <Title>Dashboad</Title>
       <Button type="primary" onClick={handleLogout}>
         Logout
       </Button>
-    </div>
+    </>
   );
 };
 
