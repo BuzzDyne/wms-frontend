@@ -1,0 +1,18 @@
+{
+  "cartexblanche": "CartexBlanche",
+  "login": {
+    "popup": {
+      "success": "Login berhasil!",
+      "failed": "Login gagal!"
+    },
+    "title": "Masuk ke Akun Anda",
+    "description": "Masukkan nama pengguna dan kata sandi Anda untuk melanjutkan.",
+    "username": "Nama Pengguna",
+    "password": "Kata Sandi",
+    "loginButton": "Masuk",
+    "healthPageLink": "Pergi ke Halaman Cek Kesehatan",
+    "usernameRequired": "Harap masukkan nama pengguna!",
+    "passwordRequired": "Harap masukkan kata sandi!",
+    "toggleLanguage": "Beralih ke Bahasa Inggris"
+  }
+}

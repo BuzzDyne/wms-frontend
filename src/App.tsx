@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -10,6 +10,8 @@ import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import { isAuthenticated } from "./services/auth";
 import HealthPage from "./pages/HealthPage";
+import { ConfigProvider, Spin } from "antd";
+import { AuthProvider } from "./context/AuthProvider";
 
 const routesConfig = [
   { path: "/login", element: <LoginPage />, private: false },
@@ -18,30 +20,62 @@ const routesConfig = [
   { path: "/lol", element: <div>lol</div>, private: true },
 ];
 
+// Pages
+const Page404 = React.lazy(() => import("./pages/Page404"));
+
 const App: React.FC = () => (
-  <Router>
-    <Routes>
-      {routesConfig.map((route, index) => (
-        <Route
-          key={index}
-          path={route.path}
-          element={
-            route.private ? (
-              <PrivateRoute>{route.element}</PrivateRoute>
-            ) : (
-              route.element
-            )
+  <ConfigProvider
+    theme={{
+      token: {
+        colorIcon: "#A9A9A9",
+      },
+    }}
+  >
+    <Router>
+      <AuthProvider>
+        <Suspense
+          fallback={
+            <Spin
+              size="large"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+              }}
+            />
           }
-        />
-      ))}
-      <Route
-        path="*"
-        element={
-          isAuthenticated() ? <Navigate to="/" /> : <Navigate to="/login" />
-        }
-      />
-    </Routes>
-  </Router>
+        >
+          <Routes>
+            <Route path="/404" element={<Page404 />} />
+            {routesConfig.map((route, index) => (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  route.private ? (
+                    <PrivateRoute>{route.element}</PrivateRoute>
+                  ) : (
+                    route.element
+                  )
+                }
+              />
+            ))}
+            <Route
+              path="*"
+              element={
+                isAuthenticated() ? (
+                  <Navigate to="/" />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+          </Routes>
+        </Suspense>
+      </AuthProvider>
+    </Router>
+  </ConfigProvider>
 );
 
 export default App;

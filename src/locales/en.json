@@ -1,0 +1,18 @@
+{
+  "cartexblanche": "CartexBlanche",
+  "login": {
+    "popup": {
+      "success": "Login successful!",
+      "failed": "Login failed!"
+    },
+    "title": "Login to Your Account",
+    "description": "Please enter your username and password to continue.",
+    "username": "Username",
+    "password": "Password",
+    "loginButton": "Log in",
+    "healthPageLink": "Go to Health Check Page",
+    "usernameRequired": "Please input your username!",
+    "passwordRequired": "Please input your password!",
+    "toggleLanguage": "Switch to Indonesian"
+  }
+}

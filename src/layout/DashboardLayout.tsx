@@ -1,13 +1,13 @@
-// src/components/DashboardLayout.tsx
 import React, { useState } from "react";
 import {
   Layout,
   Menu,
-  Breadcrumb,
   Dropdown,
   Typography,
   Avatar,
   theme,
+  Drawer,
+  Button,
 } from "antd";
 import {
   DesktopOutlined,
@@ -16,10 +16,13 @@ import {
   TeamOutlined,
   UserOutlined,
   LogoutOutlined,
+  MenuOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../services/auth";
+import { useMediaQuery } from "react-responsive";
+import styles from "./DashboardLayout.module.css";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Title } = Typography;
@@ -61,42 +64,76 @@ interface DashboardLayoutProps {
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
   const navigate = useNavigate();
 
-  // Profile menu items for logout
-  const profileMenu = (
-    <Menu>
-      <Menu.Item
-        key="logout"
-        icon={<LogoutOutlined />}
-        onClick={() => {
+  const profileMenu: MenuProps = {
+    items: [
+      {
+        key: "logout",
+        icon: <LogoutOutlined />,
+        label: "Logout",
+        onClick: () => {
           logout();
           navigate("/login");
-        }}
-      >
-        Logout
-      </Menu.Item>
-    </Menu>
-  );
+        },
+      },
+    ],
+  };
+
+  const toggleSidebar = () => {
+    if (isMobile) {
+      setDrawerVisible(!drawerVisible);
+    } else {
+      setCollapsed(!collapsed);
+    }
+  };
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-      >
-        <div className="demo-logo-vertical" style={{ height: "64px" }} />
-        <Menu
-          theme="dark"
-          defaultSelectedKeys={["1"]}
-          mode="inline"
-          items={sidebarItems}
-        />
-      </Sider>
+      {/* Sidebar for Desktop */}
+      {!isMobile && (
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={setCollapsed}
+          width={200}
+          style={{ position: "relative", zIndex: 2 }}
+        >
+          <div className="demo-logo-vertical" style={{ height: "64px" }} />
+          <Menu
+            theme="dark"
+            defaultSelectedKeys={["1"]}
+            mode="inline"
+            items={sidebarItems}
+          />
+        </Sider>
+      )}
+
+      {/* Drawer for Mobile */}
+      {isMobile && (
+        <Drawer
+          placement="left"
+          onClose={() => setDrawerVisible(false)}
+          open={drawerVisible}
+          styles={{
+            body: { padding: 0, backgroundColor: "#001529" },
+            header: { backgroundColor: "#001529", color: "white" },
+          }}
+        >
+          <Menu
+            theme="dark"
+            defaultSelectedKeys={["1"]}
+            mode="inline"
+            items={sidebarItems}
+          />
+        </Drawer>
+      )}
+
       <Layout>
         <Header
           style={{
@@ -107,13 +144,22 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             alignItems: "center",
           }}
         >
-          {/* Title on the left */}
-          <Title level={3} style={{ margin: 0 }}>
-            CartexBlance WMS
-          </Title>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {/* Hamburger icon */}
+            <Button
+              type="text"
+              icon={<MenuOutlined />}
+              onClick={toggleSidebar}
+              style={{ marginRight: 16 }}
+            />
+            {/* Title */}
+            <Title level={3} style={{ margin: 0 }}>
+              CartexBlance WMS
+            </Title>
+          </div>
 
           {/* Profile dropdown on the right */}
-          <Dropdown overlay={profileMenu} trigger={["click"]}>
+          <Dropdown menu={profileMenu} trigger={["click"]}>
             <div
               style={{
                 cursor: "pointer",
@@ -127,6 +173,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             </div>
           </Dropdown>
         </Header>
+
         <Content style={{ margin: "16px 16px" }}>
           <div
             style={{
@@ -139,6 +186,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             {children}
           </div>
         </Content>
+
         <Footer style={{ textAlign: "center" }}>
           Ant Design ©{new Date().getFullYear()} Created by Ant UED
         </Footer>

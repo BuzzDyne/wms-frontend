@@ -1,0 +1,44 @@
+.login-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.illustration-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Blueish gradient background */
+  background: linear-gradient(135deg, #3a7bd5, #3a6073);
+}
+
+.illustration {
+  max-width: 80%;
+  height: auto;
+  opacity: 0.8; /* Optional: Reduce opacity for better contrast with text */
+}
+
+.login-card-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  background-color: #f0f2f5; /* Light background color for contrast */
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+
+  .illustration-section {
+    display: none;
+  }
+
+  .login-card-section {
+    width: 100%;
+    padding: 16px;
+  }
+}
