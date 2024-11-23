@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Layout,
   Dropdown,
@@ -11,11 +12,14 @@ import {
 import { LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
 import { logout } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../models/types";
 
 const { Header } = Layout;
 const { Title } = Typography;
 
 const AppHeader = () => {
+  const dispatch = useDispatch();
+  const sidebarShow = useSelector((state: RootState) => state.sidebarShow);
   const navigate = useNavigate();
 
   const {
@@ -35,6 +39,11 @@ const AppHeader = () => {
       },
     ],
   };
+
+  const toggleSidebar = () => {
+    dispatch({ type: "set", sidebarShow: !sidebarShow });
+  };
+
   return (
     <Header
       style={{
@@ -50,9 +59,7 @@ const AppHeader = () => {
         <Button
           type="text"
           icon={<MenuOutlined />}
-          onClick={() => {
-            alert("Not Implemented\n TODO");
-          }}
+          onClick={toggleSidebar}
           style={{ marginRight: 16 }}
         />
         {/* Title */}

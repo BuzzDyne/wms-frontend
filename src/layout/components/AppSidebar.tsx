@@ -6,8 +6,10 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Drawer, Layout, Menu, MenuProps, theme } from "antd";
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
+import { RootState } from "../../models/types";
 
 const { Sider } = Layout;
 
@@ -41,18 +43,19 @@ const sidebarItems: MenuItem[] = [
 ];
 
 const AppSidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const [drawerVisible, setDrawerVisible] = useState(true);
+  const dispatch = useDispatch();
+  const sidebarShow = useSelector((state: RootState) => state.sidebarShow);
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
+  const handleCloseNavbar = () => {
+    dispatch({ type: "set", sidebarShow: false });
+  };
 
   return (
     <>
-      {/* Sidebar for Desktop */}
       {!isMobile && (
         <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={setCollapsed}
+          collapsed={sidebarShow}
           width={200}
           style={{ position: "relative", zIndex: 2 }}
         >
@@ -66,12 +69,11 @@ const AppSidebar = () => {
         </Sider>
       )}
 
-      {/* Drawer for Mobile */}
       {isMobile && (
         <Drawer
           placement="left"
-          onClose={() => setDrawerVisible(false)}
-          open={drawerVisible}
+          onClose={handleCloseNavbar}
+          open={sidebarShow}
           styles={{
             body: { padding: 0, backgroundColor: "#001529" },
             header: { backgroundColor: "#001529", color: "white" },
