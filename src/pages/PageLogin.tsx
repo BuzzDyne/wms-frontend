@@ -3,13 +3,13 @@ import { Button, Card, Form, Input, Typography, message } from "antd";
 import { login } from "../services/auth";
 import { useNavigate } from "react-router-dom";
 import { TOAST_DURATION } from "../utils/constant";
-import "./LoginPage.css";
+import "./PageLogin.css";
 import { useTranslation } from "react-i18next";
 import { GlobalOutlined } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
 
-const LoginPage: React.FC = () => {
+const PageLogin: React.FC = () => {
   const { t, i18n } = useTranslation(); // Destructure i18n for language change
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -102,4 +102,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default PageLogin;

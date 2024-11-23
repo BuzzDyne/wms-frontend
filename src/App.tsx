@@ -1,11 +1,6 @@
 import React, { Suspense } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import PageLogin from "./pages/PageLogin";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import { isAuthenticated } from "./services/auth";
@@ -14,14 +9,31 @@ import { ConfigProvider, Spin } from "antd";
 import { AuthProvider } from "./context/AuthProvider";
 
 const routesConfig = [
-  { path: "/login", element: <LoginPage />, private: false },
+  { path: "/login", element: <PageLogin />, private: false },
   { path: "/health", element: <HealthPage />, private: false },
   { path: "/", element: <Dashboard />, private: true },
   { path: "/lol", element: <div>lol</div>, private: true },
 ];
 
+const loadingSpinner = (
+  <Spin
+    size="large"
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+    }}
+  />
+);
+
+// Layout
+const DefaultLayout = React.lazy(() => import("./layout/DashboardLayout"));
+
 // Pages
-const Page404 = React.lazy(() => import("./pages/Page404"));
+const PageNotFound = React.lazy(() => import("./pages/Page404"));
+const LoginPage = React.lazy(() => import("./pages/PageLogin"));
+const PageHealth = React.lazy(() => import("./pages/HealthPage"));
 
 const App: React.FC = () => (
   <ConfigProvider
@@ -31,23 +43,14 @@ const App: React.FC = () => (
       },
     }}
   >
-    <Router>
+    <BrowserRouter>
       <AuthProvider>
-        <Suspense
-          fallback={
-            <Spin
-              size="large"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100vh",
-              }}
-            />
-          }
-        >
+        <Suspense fallback={loadingSpinner}>
           <Routes>
-            <Route path="/404" element={<Page404 />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/404" element={<PageNotFound />} />
+            {/* <Route path="*" element={<DefaultLayout />} /> */}
+
             {routesConfig.map((route, index) => (
               <Route
                 key={index}
@@ -74,7 +77,7 @@ const App: React.FC = () => (
           </Routes>
         </Suspense>
       </AuthProvider>
-    </Router>
+    </BrowserRouter>
   </ConfigProvider>
 );
 
