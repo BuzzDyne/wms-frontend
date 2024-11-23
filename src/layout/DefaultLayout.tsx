@@ -2,6 +2,8 @@ import React from "react";
 import { Layout } from "antd";
 import AppSidebar from "./components/AppSidebar";
 import AppHeader from "./components/AppHeader";
+import AppContent from "./components/AppContent";
+import AppFooter from "./components/AppFooter";
 
 const DefaultLayout = () => {
   return (
@@ -9,8 +11,8 @@ const DefaultLayout = () => {
       <AppSidebar />
       <Layout>
         <AppHeader />
-        <div>App Content</div>
-        <div>App Footer</div>
+        <AppContent />
+        <AppFooter />
       </Layout>
     </Layout>
   );

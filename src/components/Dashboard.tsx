@@ -1,23 +1,23 @@
 import React from "react";
-import { Button, message, Typography } from "antd";
-import { logout } from "../services/auth";
+import { Button, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
-import { TOAST_DURATION } from "../utils/constant";
+import useAuth from "../hooks/useAuth";
 
 const { Title } = Typography;
 
 const Dashboard: React.FC = () => {
+  const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
-    message.success("Logged out successfully", TOAST_DURATION);
-    navigate("/login");
+    setAuth({});
+    localStorage.removeItem("auth");
+    navigate("/login", { replace: true });
   };
 
   return (
     <>
-      <Title>Dashboad</Title>
+      <Title>Dashboard</Title>
       <Button type="primary" onClick={handleLogout}>
         Logout
       </Button>

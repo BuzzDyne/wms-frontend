@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, Card, Form, Input, Typography, message } from "antd";
-import { login } from "../services/auth";
 import { useNavigate } from "react-router-dom";
 import { TOAST_DURATION } from "../utils/constant";
 import "./PageLogin.css";
@@ -18,7 +17,7 @@ const PageLogin: React.FC = () => {
     setLoading(true);
     // Mock authentication
     if (values.username === "user" && values.password === "user") {
-      login("mock-token");
+      alert(`TODO Implement Login Method`);
       message.success(t("login.popup.success"), TOAST_DURATION);
       navigate("/");
     } else {

@@ -10,14 +10,15 @@ import {
   MenuProps,
 } from "antd";
 import { LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
-import { logout } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../models/types";
+import useAuth from "../../hooks/useAuth";
 
 const { Header } = Layout;
 const { Title } = Typography;
 
 const AppHeader = () => {
+  const { auth, setAuth } = useAuth();
   const dispatch = useDispatch();
   const sidebarShow = useSelector((state: RootState) => state.sidebarShow);
   const navigate = useNavigate();
@@ -33,8 +34,9 @@ const AppHeader = () => {
         icon: <LogoutOutlined />,
         label: "Logout",
         onClick: () => {
-          logout();
-          navigate("/login");
+          setAuth({});
+          localStorage.removeItem("auth");
+          navigate("/login", { replace: true });
         },
       },
     ],

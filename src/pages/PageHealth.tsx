@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Button, Form, Input, message, Typography } from "antd";
+import { Button, Form, message, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
 import { TOAST_DURATION } from "../utils/constant";
 
 const { Title, Paragraph } = Typography;
 
-const HealthPage: React.FC = () => {
+const PageHealth: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
@@ -67,4 +67,4 @@ const HealthPage: React.FC = () => {
   );
 };
 
-export default HealthPage;
+export default PageHealth;
