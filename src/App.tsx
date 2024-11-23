@@ -28,7 +28,7 @@ const loadingSpinner = (
 );
 
 // Layout
-const DefaultLayout = React.lazy(() => import("./layout/DashboardLayout"));
+const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 
 // Pages
 const PageNotFound = React.lazy(() => import("./pages/Page404"));
@@ -49,8 +49,8 @@ const App: React.FC = () => (
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/404" element={<PageNotFound />} />
-            {/* <Route path="*" element={<DefaultLayout />} /> */}
-
+            <Route path="*" element={<DefaultLayout />} />
+            {/* 
             {routesConfig.map((route, index) => (
               <Route
                 key={index}
@@ -73,7 +73,7 @@ const App: React.FC = () => (
                   <Navigate to="/login" />
                 )
               }
-            />
+            /> */}
           </Routes>
         </Suspense>
       </AuthProvider>
