@@ -2,7 +2,7 @@ import React, { ComponentType, Suspense } from "react";
 import useAuth from "../../hooks/useAuth";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Layout, theme } from "antd";
-import routes from "../../routesConfig";
+import routes from "../../configs/routesConfig";
 const { Content } = Layout;
 
 interface ProtectedRouteProps {

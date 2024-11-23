@@ -1,9 +1,9 @@
 import React, { LazyExoticComponent } from "react";
 
-const Dashboard = React.lazy(() => import("../src/components/Dashboard"));
-const Home = React.lazy(() => import("../src/components/Home"));
+const Dashboard = React.lazy(() => import("../components/Dashboard"));
+const Home = React.lazy(() => import("../components/Home"));
 
-export interface RouteConfig {
+interface RouteConfig {
   path: string;
   element: LazyExoticComponent<React.FC>;
 }

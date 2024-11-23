@@ -1,54 +1,68 @@
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Drawer, Layout, Menu, MenuProps, theme } from "antd";
-import React from "react";
+import { Drawer, Layout, Menu, MenuProps } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import { RootState } from "../../models/types";
+import { useNavigate, useLocation } from "react-router-dom";
+import { MenuItem, RootState } from "../../models/types";
+import { defaultNavItems } from "../../configs/navsConfig";
 
 const { Sider } = Layout;
 
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[]
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  } as MenuItem;
-}
-type MenuItem = Required<MenuProps>["items"][number];
-const sidebarItems: MenuItem[] = [
-  getItem("Option 1", "1", <PieChartOutlined />),
-  getItem("Option 2", "2", <DesktopOutlined />),
-  getItem("User", "sub1", <UserOutlined />, [
-    getItem("Tom", "3"),
-    getItem("Bill", "4"),
-    getItem("Alex", "5"),
-  ]),
-  getItem("Team", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
-  ]),
-  getItem("Files", "9", <FileOutlined />),
-];
-
 const AppSidebar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const sidebarShow = useSelector((state: RootState) => state.sidebarShow);
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
+  const navItems = defaultNavItems;
+
   const handleCloseNavbar = () => {
-    dispatch({ type: "set", sidebarShow: false });
+    dispatch({ type: "set", sidebarShow: !sidebarShow });
+  };
+
+  const handleMenuClick: MenuProps["onClick"] = (e) => {
+    const clickedItem = findMenuItemByKey(navItems, e.key);
+    if (clickedItem?.path) {
+      navigate(clickedItem.path);
+      if (isMobile) {
+        handleCloseNavbar();
+      }
+    }
+  };
+
+  const findMenuItemByKey = (
+    items: MenuItem[],
+    key: string
+  ): MenuItem | undefined => {
+    for (const item of items) {
+      if (item.key === key) return item;
+      if (item.children) {
+        const found = findMenuItemByKey(item.children, key);
+        if (found) return found;
+      }
+    }
+    return undefined;
+  };
+
+  const getSelectedKeys = () => {
+    const currentPath = location.pathname;
+    const selectedItem = findMenuItemByPath(navItems, currentPath);
+    return selectedItem ? [String(selectedItem.key)] : [];
+  };
+
+  // Helper function to find menu item by path
+  const findMenuItemByPath = (
+    items: MenuItem[],
+    path: string
+  ): MenuItem | undefined => {
+    for (const item of items) {
+      if (item.path === path) return item;
+      if (item.children) {
+        const found = findMenuItemByPath(item.children, path);
+        if (found) return found;
+      }
+    }
+    return undefined;
   };
 
   return (
@@ -62,9 +76,10 @@ const AppSidebar = () => {
           <div style={{ height: "100px" }} />
           <Menu
             theme="dark"
-            defaultSelectedKeys={["1"]}
+            selectedKeys={getSelectedKeys()}
             mode="inline"
-            items={sidebarItems}
+            items={navItems}
+            onClick={handleMenuClick}
           />
         </Sider>
       )}
@@ -73,7 +88,7 @@ const AppSidebar = () => {
         <Drawer
           placement="left"
           onClose={handleCloseNavbar}
-          open={sidebarShow}
+          open={!sidebarShow}
           styles={{
             body: { padding: 0, backgroundColor: "#001529" },
             header: { backgroundColor: "#001529", color: "white" },
@@ -81,9 +96,10 @@ const AppSidebar = () => {
         >
           <Menu
             theme="dark"
-            defaultSelectedKeys={["1"]}
+            selectedKeys={getSelectedKeys()}
             mode="inline"
-            items={sidebarItems}
+            items={navItems}
+            onClick={handleMenuClick}
           />
         </Drawer>
       )}
