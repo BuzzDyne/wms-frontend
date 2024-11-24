@@ -1,10 +1,18 @@
-import React, { useState } from "react";
-import { Button, Card, Form, Input, Typography, App as AntdApp } from "antd";
+import React, { useState, useEffect } from "react";
+import {
+  Button,
+  Card,
+  Form,
+  Input,
+  Typography,
+  App as AntdApp,
+  Alert,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 import { TOAST_DURATION } from "../utils/constant";
 import "./PageLogin.css";
 import { useTranslation } from "react-i18next";
-import { GlobalOutlined } from "@ant-design/icons";
+import { GlobalOutlined, RedoOutlined } from "@ant-design/icons";
 import { axiosInstance } from "../api/axios";
 import axios from "axios";
 import { AUTH_ENDPOINTS } from "../utils/endpoints";
@@ -24,8 +32,35 @@ const PageLogin: React.FC = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
+  const [healthLoading, setHealthLoading] = useState<boolean>(false);
+  const [serverStatus, setServerStatus] = useState<string | null>(null);
+  const [lastChecked, setLastChecked] = useState<string | null>(null);
   const [form] = Form.useForm<LoginValues>();
   const { message } = AntdApp.useApp();
+
+  // Function to check server health
+  const checkServerHealth = async () => {
+    setHealthLoading(true);
+    setServerStatus("Checking...");
+    setLastChecked("...");
+    try {
+      const response = await axiosInstance.get("/health-check");
+      if (response.status === 200) {
+        setServerStatus("Online");
+      } else {
+        setServerStatus("Offline");
+      }
+    } catch (err) {
+      setServerStatus("Offline");
+    } finally {
+      setHealthLoading(false);
+      setLastChecked(new Date().toLocaleString()); // set last checked timestamp
+    }
+  };
+
+  useEffect(() => {
+    checkServerHealth(); // check server health when the component mounts
+  }, []);
 
   const onFinish = async (values: LoginRequest): Promise<void> => {
     setLoading(true);
@@ -108,6 +143,7 @@ const PageLogin: React.FC = () => {
           >
             {t("login.description")}
           </Text>
+
           <Form form={form} onFinish={onFinish} layout="vertical">
             <Form.Item
               label={t("login.field.username.label")}
@@ -153,11 +189,6 @@ const PageLogin: React.FC = () => {
               </Button>
             </Form.Item>
             <Form.Item>
-              <Button block type="link" onClick={() => navigate("/health")}>
-                {t("login.healthPageLink")}
-              </Button>
-            </Form.Item>
-            <Form.Item>
               <Button
                 block
                 type="link"
@@ -169,6 +200,37 @@ const PageLogin: React.FC = () => {
               </Button>
             </Form.Item>
           </Form>
+          <Alert
+            message={
+              serverStatus ? (
+                <>
+                  <div>Server Status: {serverStatus}</div>
+                  <div style={{ fontSize: "x-small" }}>
+                    Checked: {lastChecked}
+                  </div>
+                </>
+              ) : (
+                "Checking server status..."
+              )
+            }
+            type={
+              healthLoading
+                ? "warning"
+                : serverStatus === "Online"
+                ? "success"
+                : "error"
+            }
+            action={
+              <Button
+                color="default"
+                icon={<RedoOutlined />}
+                onClick={checkServerHealth}
+                loading={healthLoading}
+              />
+            }
+            style={{ marginTop: 24 }}
+            showIcon
+          />
         </Card>
       </div>
     </div>
