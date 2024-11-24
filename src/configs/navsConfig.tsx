@@ -18,10 +18,34 @@ function getItem(
 }
 
 export const defaultNavItems: MenuItem[] = [
+  getItem("Dashboard", "d1", <GoogleOutlined />, undefined, "/dashboard"),
+];
+
+export const ownerNavItems: MenuItem[] = [
   getItem("Dashboard", "2", <GoogleOutlined />, undefined, "/dashboard"),
   getItem("User", "sub1", <UserOutlined />, [
     getItem("Home", "3", <HomeOutlined />, undefined, "/home"),
     getItem("Bill", "4", undefined, undefined, "/user/bill"),
     getItem("Alex", "5", undefined, undefined, "/user/alex"),
   ]),
+];
+
+export const ecomNavItems: MenuItem[] = [
+  getItem(
+    "Ecommerce Dashboard",
+    "2",
+    <HomeOutlined />,
+    undefined,
+    "/dashboard"
+  ),
+];
+
+export const whNavItems: MenuItem[] = [
+  getItem(
+    "Warehouse Dashboard",
+    "2",
+    <HomeOutlined />,
+    undefined,
+    "/dashboard"
+  ),
 ];

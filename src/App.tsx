@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ConfigProvider, Spin } from "antd";
+import { ConfigProvider, Spin, App as AntdApp } from "antd";
 import { AuthProvider } from "./context/AuthProvider";
 
 const loadingSpinner = (
@@ -31,18 +31,20 @@ const App: React.FC = () => (
       },
     }}
   >
-    <BrowserRouter>
-      <AuthProvider>
-        <Suspense fallback={loadingSpinner}>
-          <Routes>
-            <Route path="/health" element={<PageHealth />} />
-            <Route path="/login" element={<PageLogin />} />
-            <Route path="/404" element={<PageNotFound />} />
-            <Route path="*" element={<DefaultLayout />} />
-          </Routes>
-        </Suspense>
-      </AuthProvider>
-    </BrowserRouter>
+    <AntdApp>
+      <BrowserRouter>
+        <AuthProvider>
+          <Suspense fallback={loadingSpinner}>
+            <Routes>
+              <Route path="/health" element={<PageHealth />} />
+              <Route path="/login" element={<PageLogin />} />
+              <Route path="/404" element={<PageNotFound />} />
+              <Route path="*" element={<DefaultLayout />} />
+            </Routes>
+          </Suspense>
+        </AuthProvider>
+      </BrowserRouter>
+    </AntdApp>
   </ConfigProvider>
 );
 

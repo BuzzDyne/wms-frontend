@@ -1,18 +1,42 @@
 {
   "cartexblanche": "CartexBlanche",
   "login": {
+    "title": "Log in to Your Account",
+    "description": "Enter your username and password to continue.",
     "popup": {
       "success": "Login successful!",
       "failed": "Login failed!"
     },
-    "title": "Login to Your Account",
-    "description": "Please enter your username and password to continue.",
-    "username": "Username",
-    "password": "Password",
+    "field": {
+      "username": {
+        "label": "Username",
+        "placeholder": "Username",
+        "error": {
+          "required": "Please enter your Username!",
+          "minlength": "Username must be at least 3 characters long",
+          "format": "Username must be alphanumeric and start with a letter"
+        }
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Password",
+        "error": {
+          "required": "Please enter your Password!",
+          "minlength": "Password must be at least 4 characters long"
+        }
+      }
+    },
+    "submit": {
+      "buttonLabel": "Log in",
+      "error": {
+        "AUT_SIN_E01": "Username not found",
+        "AUT_SIN_E02": "Incorrect password"
+      }
+    },
     "loginButton": "Log in",
     "healthPageLink": "Go to Health Check Page",
-    "usernameRequired": "Please input your username!",
-    "passwordRequired": "Please input your password!",
-    "toggleLanguage": "Switch to Indonesian"
-  }
+    "toggleLanguage": "Switch to English"
+  },
+  "generalError": "General Error",
+  "unknownError": "Unknown Error"
 }

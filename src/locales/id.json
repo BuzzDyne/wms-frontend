@@ -1,18 +1,42 @@
 {
   "cartexblanche": "CartexBlanche",
   "login": {
+    "title": "Masuk ke Akun Anda",
+    "description": "Masukkan nama pengguna dan kata sandi Anda untuk melanjutkan.",
     "popup": {
       "success": "Login berhasil!",
       "failed": "Login gagal!"
     },
-    "title": "Masuk ke Akun Anda",
-    "description": "Masukkan nama pengguna dan kata sandi Anda untuk melanjutkan.",
-    "username": "Nama Pengguna",
-    "password": "Kata Sandi",
+    "field": {
+      "username": {
+        "label": "Nama Pengguna",
+        "placeholder": "Nama Pengguna",
+        "error": {
+          "required": "Harap masukkan Nama Pengguna!",
+          "minlength": "Nama Pengguna harus minimal 3 karakter",
+          "format": "Nama Pengguna harus alphanumerik dan dimulai dengan huruf"
+        }
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Password",
+        "error": {
+          "required": "Harap masukkan Password!",
+          "minlength": "Password harus minimal 4 karakter"
+        }
+      }
+    },
+    "submit": {
+      "buttonLabel": "Masuk",
+      "error": {
+        "AUT_SIN_E01": "Nama Pengguna tidak ditemukan",
+        "AUT_SIN_E02": "Kata Sandi salah"
+      }
+    },
     "loginButton": "Masuk",
     "healthPageLink": "Pergi ke Halaman Cek Kesehatan",
-    "usernameRequired": "Harap masukkan nama pengguna!",
-    "passwordRequired": "Harap masukkan kata sandi!",
     "toggleLanguage": "Beralih ke Bahasa Inggris"
-  }
+  },
+  "generalError": "General Error",
+  "unknownError": "Unknown Error"
 }

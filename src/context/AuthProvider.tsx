@@ -2,9 +2,11 @@ import { useState, createContext, useEffect, ReactNode } from "react";
 
 // Define the type for authentication data
 interface AuthData {
-  user?: string;
-  token?: string;
-  [key: string]: any; // Allow additional fields if necessary
+  token_username?: string;
+  token_role_id?: number;
+  token_user_id?: number;
+  access_token?: string;
+  refresh_token?: string;
 }
 
 // Define the type for the AuthContext

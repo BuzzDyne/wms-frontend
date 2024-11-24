@@ -1,1 +1,1 @@
-export const TOAST_DURATION = 1;
+export const TOAST_DURATION = 3;
