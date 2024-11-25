@@ -1,11 +1,10 @@
-import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Layout, Dropdown, Button, theme, MenuProps, Flex } from "antd";
 import {
   DownOutlined,
   LogoutOutlined,
   MenuOutlined,
-  QrcodeOutlined,
+  ScanOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../models/types";
@@ -63,13 +62,11 @@ const AppHeader = () => {
           />
         </Flex>
         <Flex style={{ width: "100%" }} align="center" justify="center">
-          <Button type="primary" icon={<QrcodeOutlined />}>
+          <Button type="primary" icon={<ScanOutlined />}>
             Scan QR
           </Button>
         </Flex>
       </Flex>
-
-      {/* Profile dropdown on the right */}
       <Flex>
         <Dropdown menu={profileMenu} placement="bottomRight" arrow>
           <Button icon={<DownOutlined />} iconPosition="end">

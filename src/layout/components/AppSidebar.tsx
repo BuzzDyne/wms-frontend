@@ -3,7 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate, useLocation } from "react-router-dom";
 import { MenuItem, RootState } from "../../models/types";
-import { defaultNavItems } from "../../configs/navsConfig";
+import {
+  defaultNavItems,
+  ecomNavItems,
+  ownerNavItems,
+  packNavItems,
+  wareNavItems,
+} from "../../configs/navsConfig";
+import useAuth from "../../hooks/useAuth";
+import { ROLE_NAMES } from "../../utils/constant";
 
 const { Sider } = Layout;
 
@@ -13,8 +21,18 @@ const AppSidebar = () => {
   const location = useLocation();
   const sidebarShow = useSelector((state: RootState) => state.sidebarShow);
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const { auth } = useAuth();
+  const userRoleId = (auth.token_role_id ?? 0) as 0 | 1 | 2 | 3 | 4;
 
-  const navItems = defaultNavItems;
+  const roleToNavItems: { [key in 0 | 1 | 2 | 3 | 4]: MenuItem[] } = {
+    0: defaultNavItems,
+    1: ownerNavItems,
+    2: wareNavItems,
+    3: ecomNavItems,
+    4: packNavItems,
+  };
+
+  const navItems = roleToNavItems[userRoleId];
 
   const handleCloseNavbar = () => {
     dispatch({ type: "set", sidebarShow: !sidebarShow });
