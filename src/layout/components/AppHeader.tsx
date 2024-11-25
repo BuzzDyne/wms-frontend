@@ -1,21 +1,18 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Layout, Dropdown, Button, theme, MenuProps, Flex } from "antd";
 import {
-  Layout,
-  Dropdown,
-  Avatar,
-  Button,
-  theme,
-  Typography,
-  MenuProps,
-} from "antd";
-import { LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
+  DownOutlined,
+  LogoutOutlined,
+  MenuOutlined,
+  QrcodeOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../models/types";
 import useAuth from "../../hooks/useAuth";
+import { capitalizeString } from "../../utils/utils";
 
 const { Header } = Layout;
-const { Title } = Typography;
 
 const AppHeader = () => {
   const { auth, setAuth } = useAuth();
@@ -56,34 +53,30 @@ const AppHeader = () => {
         alignItems: "center",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center" }}>
-        {/* Hamburger icon */}
-        <Button
-          type="text"
-          icon={<MenuOutlined />}
-          onClick={toggleSidebar}
-          style={{ marginRight: 16 }}
-        />
-        {/* Title */}
-        <Title level={3} style={{ margin: 0 }}>
-          CartexBlance WMS
-        </Title>
-      </div>
+      <Flex align="center" justify="space-between" style={{ width: "100%" }}>
+        <Flex align="center">
+          <Button
+            type="text"
+            icon={<MenuOutlined />}
+            onClick={toggleSidebar}
+            style={{ marginRight: 16 }}
+          />
+        </Flex>
+        <Flex style={{ width: "100%" }} align="center" justify="center">
+          <Button type="primary" icon={<QrcodeOutlined />}>
+            Scan QR
+          </Button>
+        </Flex>
+      </Flex>
 
       {/* Profile dropdown on the right */}
-      <Dropdown menu={profileMenu} trigger={["click"]}>
-        <div
-          style={{
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-          }}
-        >
-          <Avatar icon={<UserOutlined />} />
-          <span style={{ color: "#1890ff" }}>Profile</span>
-        </div>
-      </Dropdown>
+      <Flex>
+        <Dropdown menu={profileMenu} placement="bottomRight" arrow>
+          <Button icon={<DownOutlined />} iconPosition="end">
+            Welcome, {capitalizeString(auth.token_username)}
+          </Button>
+        </Dropdown>
+      </Flex>
     </Header>
   );
 };

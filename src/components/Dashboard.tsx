@@ -18,7 +18,7 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <Title>Dashboard</Title>
-      <Button type="primary" onClick={handleLogout}>
+      <Button type="primary" danger onClick={handleLogout}>
         Logout
       </Button>
     </>
