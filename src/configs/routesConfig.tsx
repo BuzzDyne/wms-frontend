@@ -1,9 +1,9 @@
 import React, { LazyExoticComponent } from "react";
 
-const Dashboard = React.lazy(() => import("../components/Dashboard"));
-const Home = React.lazy(() => import("../components/Home"));
+const Dashboard = React.lazy(() => import("../components/subpage/Dashboard"));
+const Home = React.lazy(() => import("../components/subpage/Home"));
 const InboundSchedule = React.lazy(
-  () => import("../components/InboundSchedule")
+  () => import("../components/subpage/InboundSchedule")
 );
 
 interface RouteConfig {

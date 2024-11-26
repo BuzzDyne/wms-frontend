@@ -1,7 +1,7 @@
 import React, { ComponentType, Suspense } from "react";
 import useAuth from "../../hooks/useAuth";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Layout, theme } from "antd";
+import { Layout } from "antd";
 import routes from "../../configs/routesConfig";
 const { Content } = Layout;
 
@@ -25,10 +25,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 };
 
 const AppContent = () => {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
-
   return (
     <Content style={{ margin: "16px 32px" }}>
       <Suspense>

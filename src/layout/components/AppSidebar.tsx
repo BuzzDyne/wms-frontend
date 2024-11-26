@@ -11,7 +11,6 @@ import {
   wareNavItems,
 } from "../../configs/navsConfig";
 import useAuth from "../../hooks/useAuth";
-import { ROLE_NAMES } from "../../utils/constant";
 
 const { Sider } = Layout;
 

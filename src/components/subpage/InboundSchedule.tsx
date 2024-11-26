@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Button, Calendar, Col, Modal, Row, Switch, Typography } from "antd";
-import CardContent from "./common/CardContent";
-import ScheduleCreationModal from "./modal/ScheduleCreationModal";
+import { useState } from "react";
+import { Button, Calendar, Col, Row, Switch, Typography } from "antd";
+import CardContent from "../common/CardContent";
+import ScheduleCreationModal from "../modal/ScheduleCreationModal";
 
 const { Title, Text } = Typography;
 
@@ -16,10 +16,6 @@ const InboundSchedule = () => {
 
   const showModal = () => {
     setIsScheduleCreateModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsScheduleCreateModalOpen(false);
   };
 
   const handleCancel = () => {

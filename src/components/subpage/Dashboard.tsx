@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 const { Title } = Typography;
 
 const Dashboard: React.FC = () => {
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {

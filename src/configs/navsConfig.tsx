@@ -1,15 +1,10 @@
 import {
-  DashboardFilled,
   DashboardOutlined,
   GoogleOutlined,
-  HomeOutlined,
-  ImportOutlined,
   RollbackOutlined,
   ShopOutlined,
   TruckFilled,
-  TruckOutlined,
   UploadOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import { MenuItem } from "../models/types";
 
