@@ -25,7 +25,7 @@ const InboundSchedule = () => {
   return (
     <>
       <Title level={2} style={{ marginTop: "0" }}>
-        Inbound Schedule Contact
+        Inbound Schedule
       </Title>
       <CardContent>
         <Row justify={"space-between"} align={"middle"}>

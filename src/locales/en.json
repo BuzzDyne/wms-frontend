@@ -51,6 +51,29 @@
       }
     }
   },
+  "account-management": {
+    "modal-create": {
+      "title": "Create New User",
+      "field": {
+        "username": {
+          "label": "Username",
+          "placeholder": "Username"
+        },
+        "role": {
+          "label": "Role",
+          "placeholder": "Select a role"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "Password"
+        },
+        "repassword": {
+          "label": "Reenter Password",
+          "placeholder": "Reenter Password"
+        }
+      }
+    }
+  },
   "generalError": "General Error",
   "unknownError": "Unknown Error"
 }

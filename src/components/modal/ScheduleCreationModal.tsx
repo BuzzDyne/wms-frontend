@@ -3,13 +3,9 @@ import React, { useState } from "react";
 import { Dayjs } from "dayjs";
 import { TOAST_DURATION } from "../../utils/constant";
 import { useTranslation } from "react-i18next";
+import { BasicModalProps } from "../../models/types";
 
-interface ScheduleCreationModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const ScheduleCreationModal: React.FC<ScheduleCreationModalProps> = ({
+const ScheduleCreationModal: React.FC<BasicModalProps> = ({
   isOpen,
   onClose,
 }) => {

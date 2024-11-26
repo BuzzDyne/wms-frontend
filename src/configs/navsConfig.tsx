@@ -55,7 +55,13 @@ export const ownerNavItems: MenuItem[] = [
   ]),
 
   getItem("Admin Panel", "adm", <DashboardOutlined />, [
-    getItem("Account Management", "adm2", undefined, undefined, "/home"),
+    getItem(
+      "Account Management",
+      "adm2",
+      undefined,
+      undefined,
+      "/account-management"
+    ),
     getItem("Audit Log", "adm3", undefined, undefined, "/"),
     getItem("Report", "adm4", undefined, undefined, "/"),
   ]),
