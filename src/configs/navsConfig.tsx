@@ -38,7 +38,13 @@ export const ownerNavItems: MenuItem[] = [
   getItem("Inventory", "a2", <ShopOutlined />, undefined, "/"),
 
   getItem("Inbound", "inb", <TruckFilled />, [
-    getItem("Inbound Schedule", "inb1", undefined, undefined, "/home"),
+    getItem(
+      "Inbound Schedule",
+      "inb1",
+      undefined,
+      undefined,
+      "/inbound-schedule"
+    ),
     getItem("Inbound Creation", "inb2", undefined, undefined, "/"),
     getItem("Inbound History", "inb3", undefined, undefined, "/"),
   ]),

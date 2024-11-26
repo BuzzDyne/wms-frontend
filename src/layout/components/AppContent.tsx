@@ -30,33 +30,24 @@ const AppContent = () => {
   } = theme.useToken();
 
   return (
-    <Content style={{ margin: "16px 16px" }}>
-      <div
-        style={{
-          padding: 24,
-          minHeight: 360,
-          background: colorBgContainer,
-          borderRadius: borderRadiusLG,
-        }}
-      >
-        <Suspense>
-          <Routes>
-            {routes.map((route, idx) => {
-              return (
-                route.element && (
-                  <Route
-                    key={idx}
-                    path={route.path}
-                    element={<ProtectedRoute element={route.element} />}
-                  />
-                )
-              );
-            })}
-            <Route path="/" element={<Navigate to="dashboard" replace />} />
-            <Route path="*" element={<Navigate to="/404" replace />} />
-          </Routes>
-        </Suspense>
-      </div>
+    <Content style={{ margin: "16px 32px" }}>
+      <Suspense>
+        <Routes>
+          {routes.map((route, idx) => {
+            return (
+              route.element && (
+                <Route
+                  key={idx}
+                  path={route.path}
+                  element={<ProtectedRoute element={route.element} />}
+                />
+              )
+            );
+          })}
+          <Route path="/" element={<Navigate to="dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/404" replace />} />
+        </Routes>
+      </Suspense>
     </Content>
   );
 };

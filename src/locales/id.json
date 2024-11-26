@@ -36,6 +36,21 @@
     "loginButton": "Masuk",
     "toggleLanguage": "Beralih ke Bahasa Inggris"
   },
+  "inbound-schedule": {
+    "modal": {
+      "title": "Buat Inbound Schedule",
+      "field": {
+        "date": {
+          "label": "Pilih Tanggal",
+          "placeholder": "Pilih Tanggal"
+        },
+        "note": {
+          "label": "Catatan",
+          "placeholder": "Masukkan catatan"
+        }
+      }
+    }
+  },
   "generalError": "General Error",
   "unknownError": "Unknown Error"
 }

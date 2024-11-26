@@ -36,6 +36,21 @@
     "loginButton": "Log in",
     "toggleLanguage": "Switch to English"
   },
+  "inbound-schedule": {
+    "modal": {
+      "title": "Create Inbound Schedule",
+      "field": {
+        "date": {
+          "label": "Select Date",
+          "placeholder": "Select Date"
+        },
+        "note": {
+          "label": "Notes",
+          "placeholder": "Enter notes here"
+        }
+      }
+    }
+  },
   "generalError": "General Error",
   "unknownError": "Unknown Error"
 }
