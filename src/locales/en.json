@@ -72,6 +72,29 @@
           "placeholder": "Reenter Password"
         }
       }
+    },
+    "modal-reset-pwd": {
+      "title": "Reset Password for ",
+      "field": {
+        "password": {
+          "label": "Password",
+          "placeholder": "Password",
+          "error": {
+            "required": "Password required!",
+            "minlength": "Password must be at least 4 characters long"
+          }
+        },
+        "repassword": {
+          "label": "Reenter Password",
+          "placeholder": "Reenter Password",
+          "error": {
+            "required": "Password required!",
+            "minlength": "Password must be at least 4 characters long!",
+            "mismatch": "Password doesn't match!"
+          }
+        }
+      },
+      "success": "Password successfully reset!"
     }
   },
   "generalError": "General Error",

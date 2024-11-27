@@ -1,9 +1,10 @@
 import { Button, Col, Input, Row, Space, Table, Typography } from "antd";
 import CardContent from "../common/CardContent";
-import { DeleteFilled, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import UserCreationModal from "../modal/UserCreationModal";
 import ConfirmModal from "../modal/ConfirmModal";
+import UserResetPasswordModal from "../modal/UserResetPasswordModal";
 
 const { Title } = Typography;
 
@@ -25,6 +26,7 @@ const dataSource = [
 const AccountManagement = () => {
   const [isUserCreationOpen, setIsUserCreationOpen] = useState<boolean>(false);
   const [isUserDeletionOpen, setIsUserDeletionOpen] = useState<boolean>(false);
+  const [isUserResetPwdOpen, setIsUserResetPwdOpen] = useState<boolean>(false);
 
   const showUserCreationModal = () => {
     setIsUserCreationOpen(true);
@@ -40,6 +42,14 @@ const AccountManagement = () => {
 
   const handleUserDeletionModalCancel = () => {
     setIsUserDeletionOpen(false);
+  };
+
+  const showUserResetPwdModal = () => {
+    setIsUserResetPwdOpen(true);
+  };
+
+  const handleUserResetPwdModalCancel = () => {
+    setIsUserResetPwdOpen(false);
   };
 
   const columns = [
@@ -63,7 +73,9 @@ const AccountManagement = () => {
       key: "action",
       render: (_: any, record: any) => (
         <Space size="middle">
-          <Button className="outlined-blue">Reset Password</Button>
+          <Button className="outlined-blue" onClick={showUserResetPwdModal}>
+            Reset Password
+          </Button>
           <Button
             className="solid-red"
             icon={<DeleteOutlined />}
@@ -94,7 +106,7 @@ const AccountManagement = () => {
         </Row>
       </CardContent>
       <CardContent>
-        <Table dataSource={dataSource} columns={columns} />;
+        <Table dataSource={dataSource} columns={columns} />
       </CardContent>
 
       <UserCreationModal
@@ -110,6 +122,11 @@ const AccountManagement = () => {
         okText="CRAZY!"
         cancelText="Cancel"
         onSubmit={() => {}}
+      />
+
+      <UserResetPasswordModal
+        isOpen={isUserResetPwdOpen}
+        onClose={handleUserResetPwdModalCancel}
       />
     </>
   );

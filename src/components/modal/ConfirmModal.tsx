@@ -1,6 +1,5 @@
-import { Input, Form, App as AntdApp, Modal } from "antd";
+import { Modal } from "antd";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 interface ConfirmModalProps {
   //   modalType: string;
@@ -24,9 +23,6 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   cancelText,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const { message } = AntdApp.useApp();
-  const { t } = useTranslation();
 
   const closeSelf = () => {
     onClose();
