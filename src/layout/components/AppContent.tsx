@@ -1,7 +1,7 @@
 import React, { ComponentType, Suspense } from "react";
 import useAuth from "../../hooks/useAuth";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Layout } from "antd";
+import { Layout, Spin } from "antd";
 import routes from "../../configs/routesConfig";
 const { Content } = Layout;
 
@@ -27,7 +27,19 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 const AppContent = () => {
   return (
     <Content style={{ margin: "16px 32px" }}>
-      <Suspense>
+      <Suspense
+        fallback={
+          <Spin
+            size="large"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
+          />
+        }
+      >
         <Routes>
           {routes.map((route, idx) => {
             return (
