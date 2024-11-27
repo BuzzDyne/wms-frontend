@@ -45,7 +45,13 @@ export const ownerNavItems: MenuItem[] = [
   ]),
 
   getItem("Outbound", "out", <UploadOutlined />, [
-    getItem("Picklist Creation", "out1", undefined, undefined, "/"),
+    getItem(
+      "Picklist Creation",
+      "out1",
+      undefined,
+      undefined,
+      "/upload-picklist"
+    ),
     getItem("List Picklist", "out2", undefined, undefined, "/home"),
   ]),
 

@@ -8,6 +8,9 @@ const InboundSchedule = React.lazy(
 const AccountManagement = React.lazy(
   () => import("../components/subpage/AccountManagement")
 );
+const UploadPicklist = React.lazy(
+  () => import("../components/subpage/UploadPicklist")
+);
 
 interface RouteConfig {
   path: string;
@@ -19,6 +22,7 @@ const routes: RouteConfig[] = [
   { path: "/home", element: Home },
   { path: "/inbound-schedule", element: InboundSchedule },
   { path: "/account-management", element: AccountManagement },
+  { path: "/upload-picklist", element: UploadPicklist },
 ];
 
 export default routes;
