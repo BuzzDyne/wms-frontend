@@ -1,7 +1,7 @@
 import {
-  DashboardOutlined,
   GoogleOutlined,
   RollbackOutlined,
+  SettingFilled,
   ShopOutlined,
   TruckFilled,
   UploadOutlined,
@@ -54,7 +54,7 @@ export const ownerNavItems: MenuItem[] = [
     getItem("List Returns", "ret2", undefined, undefined, "/home"),
   ]),
 
-  getItem("Admin Panel", "adm", <DashboardOutlined />, [
+  getItem("Admin Panel", "adm", <SettingFilled />, [
     getItem(
       "Account Management",
       "adm2",
