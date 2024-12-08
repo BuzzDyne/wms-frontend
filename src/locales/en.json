@@ -51,6 +51,11 @@
       }
     }
   },
+  "new-picklist": {
+    "message": {
+      "draft_exist_warning": "A draft picklist already exists. Loading draft progress..."
+    }
+  },
   "account-management": {
     "modal-create": {
       "title": "Create New User",

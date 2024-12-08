@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -54,13 +54,17 @@ const dataSource: DataType[] = [
   },
 ];
 
-const UploadPicklist: React.FC = () => {
+const NewPicklist: React.FC = () => {
   const [tokopediaFile, setTokopediaFile] = useState<any[]>([]);
   const [shopeeFile, setShopeeFile] = useState<any[]>([]);
   const [tiktokFile, setTiktokFile] = useState<any[]>([]);
   const [lazadaFile, setLazadaFile] = useState<any[]>([]);
   const [searchText, setSearchText] = useState("");
   const [selectedSort, setSelectedSort] = useState<string | null>(null);
+
+  useEffect(() => {
+    alert("welcome to upload");
+  }, []);
 
   const handleBeforeUpload = (
     file: any,
@@ -153,7 +157,7 @@ const UploadPicklist: React.FC = () => {
   return (
     <>
       <Title level={2} style={{ marginTop: "0" }}>
-        Upload Picklist
+        New Picklist
       </Title>
       <CardContent>
         <Row gutter={[16, 16]} justify="center">
@@ -220,4 +224,4 @@ const UploadPicklist: React.FC = () => {
   );
 };
 
-export default UploadPicklist;
+export default NewPicklist;

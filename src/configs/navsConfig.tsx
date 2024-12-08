@@ -45,14 +45,8 @@ export const ownerNavItems: MenuItem[] = [
   ]),
 
   getItem("Outbound", "out", <UploadOutlined />, [
-    getItem(
-      "Picklist Creation",
-      "out1",
-      undefined,
-      undefined,
-      "/upload-picklist"
-    ),
-    getItem("List Picklist", "out2", undefined, undefined, "/home"),
+    getItem("Picklist Creation", "out1", undefined, undefined, "/new-picklist"),
+    getItem("List Picklist", "out2", undefined, undefined, "/list-picklist"),
   ]),
 
   getItem("Returns", "ret", <RollbackOutlined />, [
@@ -78,7 +72,7 @@ export const ecomNavItems: MenuItem[] = [
 
   getItem("Outbound", "out", <UploadOutlined />, [
     getItem("Picklist Creation", "out1", undefined, undefined, "/"),
-    getItem("List Picklist", "out2", undefined, undefined, "/home"),
+    getItem("List Picklist", "out2", undefined, undefined, "/list-picklist"),
   ]),
 ];
 
@@ -87,7 +81,7 @@ export const wareNavItems: MenuItem[] = [
   getItem("Inventory", "a2", <ShopOutlined />, undefined, "/"),
 
   getItem("Outbound", "out", <UploadOutlined />, [
-    getItem("List Picklist", "out2", undefined, undefined, "/home"),
+    getItem("List Picklist", "out2", undefined, undefined, "/list-picklist"),
   ]),
 
   getItem("Returns", "ret", <RollbackOutlined />, [

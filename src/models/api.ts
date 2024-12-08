@@ -19,3 +19,21 @@ export interface LoginResponse {
   access_token: string;
   refresh_token: string;
 }
+
+export interface Picklist {
+  id: number;
+  draft_create_dt: string;
+  draft_cancel_dt: string | null;
+  creation_dt: string;
+  pick_start_dt: string;
+  completion_dt: string;
+  picklist_status: string;
+}
+
+export interface GetListPicklistResponse {
+  msg: string;
+  data: Picklist[];
+  page: number;
+  size: number;
+  total: number;
+}
