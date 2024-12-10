@@ -14,3 +14,10 @@ export type MenuItem = {
   path?: string;
   children?: MenuItem[];
 };
+
+export type EcomUploadFileIsLoading = {
+  TIK: boolean;
+  TOK: boolean;
+  SHO: boolean;
+  LAZ: boolean;
+};

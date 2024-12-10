@@ -7,6 +7,10 @@ export const ROLE_NAMES = {
   4: "packer",
 };
 
+export const XLS_FILE_FORMAT =
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+export const MAX_FILE_SIZE_MB = 10;
+
 export const PICKLIST_STATUS_MAPPING: {
   [key: string]: { value: string; label: string; color: string };
 } = {

@@ -37,3 +37,30 @@ export interface GetListPicklistResponse {
   size: number;
   total: number;
 }
+
+export interface CreatePicklistResponse {
+  msg: string;
+  data: Picklist;
+}
+
+interface Item {
+  item_id: number;
+  item_name: string;
+  is_excluded: number;
+}
+
+interface Stock {
+  product_type: string;
+  product_color: string;
+  product_size: string;
+  count: number;
+  items: Record<string, Item[]>; // Dictionary to map platforms to lists of items
+}
+
+export interface PicklistDashboardResponse {
+  tik_file_id?: number | null;
+  tok_file_id?: number | null;
+  sho_file_id?: number | null;
+  laz_file_id?: number | null;
+  stocks: Stock[];
+}
