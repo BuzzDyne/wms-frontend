@@ -10,9 +10,8 @@ import {
   Modal,
   message,
   Select,
-  Input,
   Spin,
-  Card,
+  Tag,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import CardContent from "../common/CardContent";
@@ -29,12 +28,30 @@ import {
 } from "../../utils/constant";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { EcomUploadFileIsLoading } from "../../models/types";
+import {
+  EcomUploadFileIsLoading,
+  PicklistItemDisplayTableData,
+  UnmappedItemTableData,
+} from "../../models/types";
+import { TableProps } from "antd/lib";
+import PicklistItemDefineMappingModal from "../modal/PicklistItemDefineMappingModal";
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const NewPicklist: React.FC = () => {
+  const [isDefineModalOpen, setIsDefineModalOpen] = useState<boolean>(false);
+  const [defineItem, setDefineItem] = useState<UnmappedItemTableData>();
+
+  const handleOpenDefinemodal = (item: UnmappedItemTableData) => {
+    setDefineItem(item);
+    setIsDefineModalOpen(true);
+  };
+
+  const handleDefineModalCancel = () => {
+    setIsDefineModalOpen(false);
+  };
+
   const [isCheckingInit, setIsCheckingInit] = useState<boolean>(true);
   const [picklistId, setPicklistId] = useState<number>(0);
   const [btnsIsLoading, setBtnsIsLoading] = useState<EcomUploadFileIsLoading>({
@@ -170,6 +187,44 @@ const NewPicklist: React.FC = () => {
     });
   };
 
+  const handleItemExclude = async (item_id: number) => {
+    Modal.confirm({
+      title: "Are you sure you want to exclude this item?",
+      onOk: async () => {
+        try {
+          await axiosPrivate.put(
+            `/picklist/${picklistId}/picklistitem/${item_id}/exclude`
+          );
+          message.success("Item excluded successfully");
+          fetchPicklistDashboardData(picklistId);
+        } catch (error: unknown) {
+          message.error("Failed to exclude item");
+        }
+      },
+    });
+  };
+
+  const handleItemInclude = async (item_id: number) => {
+    Modal.confirm({
+      title: "Are you sure you want to include this item?",
+      onOk: async () => {
+        try {
+          await axiosPrivate.put(
+            `/picklist/${picklistId}/picklistitem/${item_id}/include`
+          );
+          await axiosPrivate.post(
+            `/picklist/${picklistId}/repeat-item-mapping`,
+            {}
+          );
+          message.success("Item included successfully");
+          fetchPicklistDashboardData(picklistId);
+        } catch (error: unknown) {
+          message.error("Failed to include item");
+        }
+      },
+    });
+  };
+
   const renderUploadSection = (
     fieldKey: keyof PicklistDashboardResponse,
     ecomCode: keyof EcomUploadFileIsLoading,
@@ -188,6 +243,7 @@ const NewPicklist: React.FC = () => {
               <span>File uploaded</span>
               <Button
                 type="link"
+                style={{ color: "red" }}
                 onClick={() => handleDelete(ecomCode, fieldKey)}
               >
                 Delete
@@ -219,9 +275,107 @@ const NewPicklist: React.FC = () => {
     );
   };
 
+  const unmappedTableColumns: TableProps<UnmappedItemTableData>["columns"] = [
+    {
+      title: "ID",
+      dataIndex: "item_id",
+      key: "item_id",
+    },
+    {
+      title: "Platform",
+      key: "ecom_code",
+      dataIndex: "ecom_code",
+      render: (_, { ecom_code }) => <>{<Tag>{ecom_code}</Tag>}</>,
+    },
+    {
+      title: "Name",
+      dataIndex: "item_name",
+      key: "item_name",
+    },
+    {
+      title: "Exclude?",
+      dataIndex: "is_excluded",
+      key: "is_excluded",
+      render: (_, { is_excluded }) => (
+        <>
+          {is_excluded ? (
+            <span style={{ color: "red" }}>Yes</span>
+          ) : (
+            <span>No</span>
+          )}
+        </>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle" key={record.item_id}>
+          {record.is_excluded ? (
+            // <a onClick={() => handleItemInclude(record.item_id)}>Include</a>
+            <Button
+              size="small"
+              className="solid-blue"
+              onClick={() => handleItemInclude(record.item_id)}
+            >
+              Include
+            </Button>
+          ) : (
+            <>
+              <Button
+                size="small"
+                className="solid-red"
+                onClick={() => handleItemExclude(record.item_id)}
+              >
+                Exclude
+              </Button>
+              <a onClick={() => handleOpenDefinemodal(record)}>
+                Define Mapping
+              </a>
+            </>
+          )}
+        </Space>
+      ),
+    },
+  ];
+
+  const picklistItemDisplayTableColumns: TableProps<PicklistItemDisplayTableData>["columns"] =
+    [
+      Table.EXPAND_COLUMN,
+      {
+        title: "Type",
+        dataIndex: "product_type",
+        key: "product_type",
+      },
+      {
+        title: "Color",
+        key: "product_color",
+        dataIndex: "product_color",
+      },
+      {
+        title: "Size",
+        dataIndex: "product_size",
+        key: "product_size",
+      },
+      {
+        title: "Count",
+        dataIndex: "count",
+        key: "count",
+      },
+      {
+        title: "Action",
+        key: "action",
+        render: (_, record) => (
+          <Space size="middle">
+            <a onClick={() => alert()}>Include</a>
+          </Space>
+        ),
+      },
+    ];
+
   return (
     <>
-      {isCheckingInit && (
+      {isCheckingInit ? (
         <Spin
           size="large"
           style={{
@@ -231,25 +385,81 @@ const NewPicklist: React.FC = () => {
             height: "100vh",
           }}
         />
+      ) : (
+        <>
+          <Title level={2} style={{ marginTop: "0" }}>
+            New Picklist
+          </Title>
+          <CardContent>
+            {renderUploadSection("tik_file_id", "TIK", "Tiktok File")}
+            {renderUploadSection("tok_file_id", "TOK", "Tokopedia File")}
+            {renderUploadSection("sho_file_id", "SHO", "Shopee File")}
+            {renderUploadSection("laz_file_id", "LAZ", "Lazada File")}
+          </CardContent>
+          <Title level={3}>Unmapped Items</Title>
+          <CardContent>
+            <Table
+              columns={unmappedTableColumns}
+              dataSource={dashboardData?.unmapped_items}
+            />
+          </CardContent>
+          <Title level={3}>Mapped Items</Title>
+          <CardContent>
+            <Table
+              rowKey={(record) => record.stock_id}
+              expandable={{
+                expandedRowRender: (record) => (
+                  <>
+                    {Object.keys(record.items).map((key) => (
+                      <div key={key} style={{ marginBottom: "16px" }}>
+                        <h4>
+                          {key === "TIK" && "TIKTOK"}
+                          {key === "TOK" && "TOKOPEDIA"}
+                          {key === "SHO" && "SHOPEE"}
+                          {key === "LAZ" && "LAZADA"}
+                        </h4>
+                        <Table
+                          columns={[
+                            {
+                              title: "ID",
+                              dataIndex: "item_id",
+                              key: "item_id",
+                              render: (text) => <>{text}</>,
+                            },
+                            {
+                              title: "Name",
+                              dataIndex: "item_name",
+                              key: "item_name",
+                              render: (text) => <>{text}</>,
+                            },
+                            // {
+                            //   title: "Excluded",
+                            //   dataIndex: "is_excluded",
+                            //   key: "is_excluded",
+                            //   render: (text) => <>{text ? "Yes" : "No"}</>,
+                            // },
+                          ]}
+                          dataSource={record.items[key]}
+                          pagination={false}
+                          rowKey="item_id"
+                        />
+                      </div>
+                    ))}
+                  </>
+                ),
+              }}
+              columns={picklistItemDisplayTableColumns}
+              dataSource={dashboardData?.stocks}
+            />
+          </CardContent>
+        </>
       )}
 
-      <Title level={2} style={{ marginTop: "0" }}>
-        New Picklist
-      </Title>
-      <CardContent>
-        {renderUploadSection("tik_file_id", "TIK", "Tiktok File")}
-        {renderUploadSection("tok_file_id", "TOK", "Tokopedia File")}
-        {renderUploadSection("sho_file_id", "SHO", "Shopee File")}
-        {renderUploadSection("laz_file_id", "LAZ", "Lazada File")}
-      </CardContent>
-      <Title level={3}>Unmapped Items</Title>
-      <CardContent>
-        <Table />
-      </CardContent>
-      <Title level={3}>Mapped Items</Title>
-      <CardContent>
-        <Table />
-      </CardContent>
+      <PicklistItemDefineMappingModal
+        isOpen={isDefineModalOpen}
+        onClose={handleDefineModalCancel}
+        item={defineItem}
+      />
     </>
   );
 };

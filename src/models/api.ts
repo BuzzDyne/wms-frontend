@@ -50,11 +50,19 @@ interface Item {
 }
 
 interface Stock {
+  stock_id: number;
   product_type: string;
   product_color: string;
   product_size: string;
   count: number;
   items: Record<string, Item[]>; // Dictionary to map platforms to lists of items
+}
+
+interface UnmappedItem {
+  item_id: number;
+  item_name: string;
+  ecom_code: number;
+  is_excluded: number;
 }
 
 export interface PicklistDashboardResponse {
@@ -63,4 +71,5 @@ export interface PicklistDashboardResponse {
   sho_file_id?: number | null;
   laz_file_id?: number | null;
   stocks: Stock[];
+  unmapped_items: UnmappedItem[];
 }
