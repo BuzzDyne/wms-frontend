@@ -68,7 +68,7 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
 
   return (
     <Modal
-      title={t("account-management.modal-create.title")}
+      title={t("new-picklist.modal-define.title")}
       open={isOpen}
       onOk={closeSelf}
       onCancel={closeSelf}
@@ -76,12 +76,10 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
     >
       <Form layout="vertical" initialValues={{ remember: false }}>
         {/* Readonly Item Name */}
-        <Form.Item
-          label={t("account-management.modal-create.field.username.label")}
-        >
+        <Form.Item label={t("new-picklist.modal-define.field.username.label")}>
           <Input.TextArea
             placeholder={t(
-              "account-management.modal-create.field.username.placeholder"
+              "new-picklist.modal-define.field.username.placeholder"
             )}
             value={item?.item_name}
             readOnly
@@ -91,12 +89,10 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
         </Form.Item>
 
         {/* Readonly Ecom Code */}
-        <Form.Item
-          label={t("account-management.modal-create.field.ecom_code.label")}
-        >
+        <Form.Item label={t("new-picklist.modal-define.field.ecom_code.label")}>
           <Input
             placeholder={t(
-              "account-management.modal-create.field.ecom_code.placeholder"
+              "new-picklist.modal-define.field.ecom_code.placeholder"
             )}
             value={item?.ecom_code}
             readOnly
@@ -106,14 +102,12 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
 
         {/* Type Dropdown */}
         <Form.Item
-          label={t("account-management.modal-create.field.type.label")}
+          label={t("new-picklist.modal-define.field.type.label")}
           required
         >
           <Select
             options={typeOptions}
-            placeholder={t(
-              "account-management.modal-create.field.type.placeholder"
-            )}
+            placeholder={t("new-picklist.modal-define.field.type.placeholder")}
             showSearch
             filterOption={(input, option) =>
               (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
@@ -123,14 +117,12 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
 
         {/* Size Dropdown */}
         <Form.Item
-          label={t("account-management.modal-create.field.size.label")}
+          label={t("new-picklist.modal-define.field.size.label")}
           required
         >
           <Select
             options={sizeOptions}
-            placeholder={t(
-              "account-management.modal-create.field.size.placeholder"
-            )}
+            placeholder={t("new-picklist.modal-define.field.size.placeholder")}
             showSearch
             filterOption={(input, option) =>
               (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
@@ -140,14 +132,12 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
 
         {/* Color Dropdown */}
         <Form.Item
-          label={t("account-management.modal-create.field.color.label")}
+          label={t("new-picklist.modal-define.field.color.label")}
           required
         >
           <Select
             options={colorOptions}
-            placeholder={t(
-              "account-management.modal-create.field.color.placeholder"
-            )}
+            placeholder={t("new-picklist.modal-define.field.color.placeholder")}
             showSearch
             filterOption={(input, option) =>
               (option?.label ?? "").toLowerCase().includes(input.toLowerCase())

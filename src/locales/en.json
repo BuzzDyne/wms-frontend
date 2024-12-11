@@ -54,6 +54,31 @@
   "new-picklist": {
     "message": {
       "draft_exist_warning": "A draft picklist already exists. Loading draft progress..."
+    },
+    "modal-define": {
+      "title": "Define Item Mapping",
+      "field": {
+        "username": {
+          "label": "Username",
+          "placeholder": "Username"
+        },
+        "ecom_code": {
+          "label": "Platform",
+          "placeholder": "Platform"
+        },
+        "type": {
+          "label": "Type",
+          "placeholder": "Type"
+        },
+        "size": {
+          "label": "Size",
+          "placeholder": "Size"
+        },
+        "color": {
+          "label": "Color",
+          "placeholder": "Color"
+        }
+      }
     }
   },
   "account-management": {
