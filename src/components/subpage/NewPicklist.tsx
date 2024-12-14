@@ -8,8 +8,7 @@ import {
   Typography,
   Upload,
   Modal,
-  message,
-  Select,
+  App as AntdApp,
   Spin,
   Tag,
 } from "antd";
@@ -37,9 +36,9 @@ import { TableProps } from "antd/lib";
 import PicklistItemDefineMappingModal from "../modal/PicklistItemDefineMappingModal";
 
 const { Title } = Typography;
-const { Option } = Select;
 
 const NewPicklist: React.FC = () => {
+  const { message } = AntdApp.useApp();
   const [isDefineModalOpen, setIsDefineModalOpen] = useState<boolean>(false);
   const [defineItem, setDefineItem] = useState<UnmappedItemTableData>();
 
@@ -48,8 +47,9 @@ const NewPicklist: React.FC = () => {
     setIsDefineModalOpen(true);
   };
 
-  const handleDefineModalCancel = () => {
+  const handleDefineModalClose = () => {
     setIsDefineModalOpen(false);
+    fetchPicklistDashboardData(picklistId);
   };
 
   const [isCheckingInit, setIsCheckingInit] = useState<boolean>(true);
@@ -93,7 +93,7 @@ const NewPicklist: React.FC = () => {
       if (response.data.data.length === 0) {
         createDraftPicklist();
       } else {
-        message.warning(t("picklist.message.picklist_exist_warning"), 5);
+        message.warning("Found Existing Draft!", 5);
         setPicklistId(response.data.data[0].id);
       }
     } catch (error: unknown) {
@@ -362,15 +362,15 @@ const NewPicklist: React.FC = () => {
         dataIndex: "count",
         key: "count",
       },
-      {
-        title: "Action",
-        key: "action",
-        render: (_, record) => (
-          <Space size="middle">
-            <a onClick={() => alert()}>Include</a>
-          </Space>
-        ),
-      },
+      // {
+      //   title: "Action",
+      //   key: "action",
+      //   render: (_, record) => (
+      //     <Space size="middle">
+      //       <a onClick={() => alert()}>Include</a>
+      //     </Space>
+      //   ),
+      // },
     ];
 
   return (
@@ -457,8 +457,9 @@ const NewPicklist: React.FC = () => {
 
       <PicklistItemDefineMappingModal
         isOpen={isDefineModalOpen}
-        onClose={handleDefineModalCancel}
-        item={defineItem}
+        onClose={handleDefineModalClose}
+        item={defineItem!}
+        picklist_id={picklistId}
       />
     </>
   );

@@ -10,7 +10,8 @@ export interface BasicModalProps {
 export interface DefineItemModalProps {
   isOpen: boolean;
   onClose: () => void;
-  item: UnmappedItemTableData | undefined;
+  item: UnmappedItemTableData;
+  picklist_id: number;
 }
 
 export type MenuItem = {

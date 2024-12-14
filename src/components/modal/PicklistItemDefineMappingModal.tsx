@@ -1,5 +1,5 @@
-import { Input, Form, Modal, Select } from "antd";
-import React, { useEffect, useState } from "react";
+import { Input, Form, Modal, Select, Button, App as AntdApp } from "antd";
+import React, { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { DefineItemModalProps } from "../../models/types";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -8,7 +8,9 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
   isOpen,
   onClose,
   item,
+  picklist_id,
 }) => {
+  const { message } = AntdApp.useApp();
   const axiosPrivate = useAxiosPrivate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [typeOptions, setTypeOptions] = useState<
@@ -20,10 +22,12 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
   const [colorOptions, setColorOptions] = useState<
     { value: string; label: string }[]
   >([]);
+  const formRef = useRef<any>(null);
 
   const { t } = useTranslation();
 
   const closeSelf = () => {
+    formRef.current?.resetFields(); // Reset form fields
     onClose();
     setIsLoading(false);
   };
@@ -66,15 +70,58 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
     if (isOpen) fetchOptions();
   }, [isOpen]);
 
+  const handleSubmit = async (values: any) => {
+    setIsLoading(true);
+    try {
+      // Mock API call
+      await axiosPrivate.post(`/picklist/item/${item.item_id}/set-mapping`, {
+        stock_size_value: values.size,
+        stock_type_value: values.type,
+        stock_color_name: values.color,
+      });
+
+      await axiosPrivate.post(
+        `/picklist/${picklist_id}/repeat-item-mapping`,
+        {}
+      );
+      message.success("Submitted");
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      message.error("Error submitting data");
+    } finally {
+      setIsLoading(false);
+      closeSelf();
+    }
+  };
+
   return (
     <Modal
       title={t("new-picklist.modal-define.title")}
       open={isOpen}
       onOk={closeSelf}
       onCancel={closeSelf}
-      confirmLoading={isLoading}
+      footer={[
+        <Button key="cancel" onClick={closeSelf}>
+          {t("cancel")}
+        </Button>,
+        <Button
+          key="submit"
+          type="primary"
+          loading={isLoading}
+          form="picklistForm"
+          htmlType="submit"
+        >
+          {t("submit")}
+        </Button>,
+      ]}
     >
-      <Form layout="vertical" initialValues={{ remember: false }}>
+      <Form
+        ref={formRef}
+        layout="vertical"
+        initialValues={{ remember: false }}
+        onFinish={handleSubmit}
+        id="picklistForm"
+      >
         {/* Readonly Item Name */}
         <Form.Item label={t("new-picklist.modal-define.field.username.label")}>
           <Input.TextArea
@@ -103,7 +150,13 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
         {/* Type Dropdown */}
         <Form.Item
           label={t("new-picklist.modal-define.field.type.label")}
-          required
+          name="type"
+          rules={[
+            {
+              required: true,
+              message: "Required",
+            },
+          ]}
         >
           <Select
             options={typeOptions}
@@ -118,7 +171,13 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
         {/* Size Dropdown */}
         <Form.Item
           label={t("new-picklist.modal-define.field.size.label")}
-          required
+          name="size"
+          rules={[
+            {
+              required: true,
+              message: "Required",
+            },
+          ]}
         >
           <Select
             options={sizeOptions}
@@ -133,7 +192,13 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
         {/* Color Dropdown */}
         <Form.Item
           label={t("new-picklist.modal-define.field.color.label")}
-          required
+          name="color"
+          rules={[
+            {
+              required: true,
+              message: "Required",
+            },
+          ]}
         >
           <Select
             options={colorOptions}
