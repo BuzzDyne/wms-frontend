@@ -47,6 +47,7 @@ interface Item {
   item_id: number;
   item_name: string;
   is_excluded: number;
+  ecom_order_id: string;
 }
 
 interface Stock {

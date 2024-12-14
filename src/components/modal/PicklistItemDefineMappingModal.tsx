@@ -102,7 +102,7 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
       onCancel={closeSelf}
       footer={[
         <Button key="cancel" onClick={closeSelf}>
-          {t("cancel")}
+          Cancel
         </Button>,
         <Button
           key="submit"
@@ -111,7 +111,7 @@ const PicklistItemDefineMappingModal: React.FC<DefineItemModalProps> = ({
           form="picklistForm"
           htmlType="submit"
         >
-          {t("submit")}
+          Submit
         </Button>,
       ]}
     >

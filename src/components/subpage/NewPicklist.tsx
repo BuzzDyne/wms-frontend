@@ -388,13 +388,13 @@ const NewPicklist: React.FC = () => {
       ) : (
         <>
           <Title level={2} style={{ marginTop: "0" }}>
-            New Picklist
+            Picklist Tool
           </Title>
           <CardContent>
-            {renderUploadSection("tik_file_id", "TIK", "Tiktok File")}
-            {renderUploadSection("tok_file_id", "TOK", "Tokopedia File")}
-            {renderUploadSection("sho_file_id", "SHO", "Shopee File")}
-            {renderUploadSection("laz_file_id", "LAZ", "Lazada File")}
+            {renderUploadSection("tik_file_id", "TIK", "Tiktok")}
+            {renderUploadSection("tok_file_id", "TOK", "Tokopedia")}
+            {renderUploadSection("sho_file_id", "SHO", "Shopee")}
+            {renderUploadSection("laz_file_id", "LAZ", "Lazada")}
           </CardContent>
           <Title level={3}>Unmapped Items</Title>
           <CardContent>
@@ -425,6 +425,11 @@ const NewPicklist: React.FC = () => {
                               dataIndex: "item_id",
                               key: "item_id",
                               render: (text) => <>{text}</>,
+                            },
+                            {
+                              title: "Ecom Order ID",
+                              dataIndex: "ecom_order_id",
+                              key: "ecom_order_id",
                             },
                             {
                               title: "Name",
