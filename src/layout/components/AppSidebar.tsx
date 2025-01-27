@@ -8,6 +8,7 @@ import {
   ecomNavItems,
   ownerNavItems,
   packNavItems,
+  temporaryUserNavItems,
   wareNavItems,
 } from "../../configs/navsConfig";
 import useAuth from "../../hooks/useAuth";

@@ -93,7 +93,7 @@ const NewPicklist: React.FC = () => {
       if (response.data.data.length === 0) {
         createDraftPicklist();
       } else {
-        message.warning("Found Existing Draft!", 5);
+        message.warning("Continue from previous draft", 3);
         setPicklistId(response.data.data[0].id);
       }
     } catch (error: unknown) {
@@ -181,6 +181,23 @@ const NewPicklist: React.FC = () => {
           fetchPicklistDashboardData(picklistId);
         } catch (error: unknown) {
           message.error("Failed to delete file");
+          setIsCheckingInit(false);
+        }
+      },
+    });
+  };
+
+  const handleClear = async () => {
+    Modal.confirm({
+      title: "Are you sure you want to reset this draft?",
+      onOk: async () => {
+        try {
+          setIsCheckingInit(true);
+          await axiosPrivate.delete(`/picklist/${picklistId}/file`);
+          message.success("Picklist reset successfully");
+          fetchPicklistDashboardData(picklistId);
+        } catch (error: unknown) {
+          message.error("Failed to reset picklist");
           setIsCheckingInit(false);
         }
       },
@@ -395,6 +412,10 @@ const NewPicklist: React.FC = () => {
             {renderUploadSection("tok_file_id", "TOK", "Tokopedia")}
             {renderUploadSection("sho_file_id", "SHO", "Shopee")}
             {renderUploadSection("laz_file_id", "LAZ", "Lazada")}
+            <br />
+            <Button danger onClick={handleClear}>
+              Clear
+            </Button>
           </CardContent>
           <Title level={3}>Unmapped Items</Title>
           <CardContent>

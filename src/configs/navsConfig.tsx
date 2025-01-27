@@ -28,6 +28,14 @@ export const defaultNavItems: MenuItem[] = [
   getItem("Dashboard", "a1", <GoogleOutlined />, undefined, "/dashboard"),
 ];
 
+export const temporaryUserNavItems: MenuItem[] = [
+  getItem("Dashboard", "a1", <GoogleOutlined />, undefined, "/dashboard"),
+
+  getItem("Outbound", "out", <UploadOutlined />, [
+    getItem("Picklist Creation", "out1", undefined, undefined, "/new-picklist"),
+  ]),
+];
+
 export const ownerNavItems: MenuItem[] = [
   getItem("Dashboard", "a1", <GoogleOutlined />, undefined, "/dashboard"),
   getItem("Inventory", "a2", <ShopOutlined />, undefined, "/"),

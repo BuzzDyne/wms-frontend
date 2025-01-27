@@ -15,13 +15,23 @@ const Dashboard: React.FC = () => {
     navigate("/login", { replace: true });
   };
 
+  const handleGoToPicklist = () => {
+    navigate("/new-picklist");
+  };
+
   return (
     <>
       <Title>Dashboard</Title>
+      <Button type="primary" onClick={handleGoToPicklist}>
+        Picklist Creation
+      </Button>
+      <br />
+      <br />
       <Button type="primary" danger onClick={handleLogout}>
         Logout
       </Button>
-      <br />
+
+      {/* <br />
       <br />
       <br />
       <Button type="primary">type="primary"</Button>
@@ -61,7 +71,7 @@ const Dashboard: React.FC = () => {
       <Button type="default" className="outlined-blue">
         Outlined Blue
       </Button>
-      <br />
+      <br /> */}
     </>
   );
 };
