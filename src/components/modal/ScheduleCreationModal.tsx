@@ -5,9 +5,14 @@ import { TOAST_DURATION } from "../../utils/constant";
 import { useTranslation } from "react-i18next";
 import { BasicModalProps } from "../../models/types";
 
-const ScheduleCreationModal: React.FC<BasicModalProps> = ({
+interface ScheduleCreationModalProps extends BasicModalProps {
+  disabledDates: string[]; // Dates in YYYYMMDD format>
+}
+
+const ScheduleCreationModal: React.FC<ScheduleCreationModalProps> = ({
   isOpen,
   onClose,
+  disabledDates,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
@@ -48,6 +53,10 @@ const ScheduleCreationModal: React.FC<BasicModalProps> = ({
     setNotes("");
   };
 
+  const disabledDate = (current: Dayjs) => {
+    return disabledDates.some((date) => current.isSame(date, "day"));
+  };
+
   return (
     <Modal
       title={t("inbound-schedule.modal.title")}
@@ -67,6 +76,7 @@ const ScheduleCreationModal: React.FC<BasicModalProps> = ({
             format="YYYY-MM-DD"
             style={{ width: "100%" }}
             placeholder={t("inbound-schedule.modal.field.date.placeholder")}
+            disabledDate={disabledDate} // Disable specified dates
           />
         </Form.Item>
         <Form.Item

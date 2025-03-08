@@ -14,6 +14,9 @@ const NewPicklist = React.lazy(
 const ListPicklist = React.lazy(
   () => import("../components/subpage/ListPicklist")
 );
+const InboundHistory = React.lazy(
+  () => import("../components/subpage/InboundHistory")
+);
 
 interface RouteConfig {
   path: string;
@@ -27,6 +30,7 @@ const routes: RouteConfig[] = [
   { path: "/account-management", element: AccountManagement },
   { path: "/list-picklist", element: ListPicklist },
   { path: "/new-picklist", element: NewPicklist },
+  { path: "/inbound-history", element: InboundHistory },
 ];
 
 export default routes;

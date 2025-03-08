@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Calendar, Col, Row, Switch, Typography } from "antd";
 import CardContent from "../common/CardContent";
 import ScheduleCreationModal from "../modal/ScheduleCreationModal";
+import { Dayjs } from "dayjs";
 
 const { Title, Text } = Typography;
 
@@ -9,6 +10,15 @@ const InboundSchedule = () => {
   const [scheduleRule, setScheduleRule] = useState<boolean>(false);
   const [isScheduleCreateModalOpen, setIsScheduleCreateModalOpen] =
     useState<boolean>(false);
+
+  // Dummy data for disabled dates in YYYYMMDD format
+  const disabledDates = ["20250101", "20250105", "20250110"];
+
+  const events = [
+    { date: "20250101" },
+    { date: "20250105" },
+    { date: "20250110" },
+  ];
 
   const handleRuleSwitchClick = () => {
     setScheduleRule(!scheduleRule);
@@ -20,6 +30,25 @@ const InboundSchedule = () => {
 
   const handleCancel = () => {
     setIsScheduleCreateModalOpen(false);
+  };
+
+  const disableDate = (current: Dayjs) => {
+    return disabledDates.includes(current.format("YYYYMMDD"));
+  };
+
+  const dateCellRender = (current: Dayjs) => {
+    const event = events.find((e) => e.date === current.format("YYYYMMDD"));
+    return event ? (
+      <div
+        style={{
+          backgroundColor: "#f0f0f0",
+          padding: "5px",
+          borderRadius: "4px",
+        }}
+      >
+        <Text>Scheduled Inbound</Text>
+      </div>
+    ) : null;
   };
 
   return (
@@ -49,7 +78,7 @@ const InboundSchedule = () => {
       </CardContent>
       <CardContent>
         {scheduleRule ? (
-          <Calendar />
+          <Calendar disabledDate={disableDate} cellRender={dateCellRender} />
         ) : (
           <div style={{ textAlign: "center", padding: "20px" }}>
             <Text strong style={{ fontSize: "16px" }}>
@@ -62,6 +91,7 @@ const InboundSchedule = () => {
       <ScheduleCreationModal
         isOpen={isScheduleCreateModalOpen}
         onClose={handleCancel}
+        disabledDates={disabledDates} // Pass the disabled dates
       />
     </>
   );
