@@ -1,50 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Modal, Button, Typography, Row, Col } from "antd";
 import { BasicModalProps } from "../../models/types";
-import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
+import QrScanner from "qr-scanner";
 
 const { Text } = Typography;
 
 const QRModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [qrResult, setQrResult] = useState<string | null>(null);
-  const [isScanning, setIsScanning] = useState<boolean>(true);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const qrScannerRef = useRef<QrScanner | null>(null);
 
-  const handleScan = (data: IDetectedBarcode[]) => {
-    if (data.length !== 0) {
-      setQrResult(data[0].rawValue); // Set the QR result from the scanner
-      console.log(
-        "Scanned QR Content:",
-        data.map((e) => e.rawValue)
-      ); // Log the result
-    }
-  };
+  useEffect(() => {
+    if (!isOpen || !videoRef.current) return;
 
-  const handleError = (err: any) => {
-    console.error("QR Scan Error:", err);
-  };
+    const qrScanner = new QrScanner(
+      videoRef.current,
+      (result) => {
+        setQrResult(result.data);
+        // onClose();
+      },
+      {
+        returnDetailedScanResult: true,
+        highlightScanRegion: true,
+        highlightCodeOutline: true,
+      }
+    );
+
+    qrScanner.start().catch(console.error);
+    qrScannerRef.current = qrScanner;
+
+    return () => {
+      qrScanner.stop();
+      qrScanner.destroy();
+    };
+  }, [isOpen]);
 
   const closeSelf = () => {
     onClose();
     setIsLoading(false);
     setQrResult(null); // Clear QR result on close
-    setIsScanning(false); // Ensure scanning stops when modal closes
-  };
-
-  const toggleScanning = () => {
-    setIsScanning((prev) => !prev); // Toggle scan state (start/stop scanning)
   };
 
   return (
     <Modal
       title="Scan QR Code"
+      width={1400}
       open={isOpen}
       onOk={closeSelf}
       onCancel={closeSelf}
       confirmLoading={isLoading}
       footer={null}
     >
-      <Row>
+      {/* <Row>
         <Col span={24}>
           <Button
             style={{ marginTop: 10 }}
@@ -65,7 +73,12 @@ const QRModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
             paused={!isScanning}
           />
         </Col>
-      </Row>
+      </Row> */}
+      <video
+        ref={videoRef}
+        className="w-full max-w-xs aspect-square rounded-lg"
+      />
+      {qrResult && <p className="mt-4 text-green-600">QR Code: {qrResult}</p>}
     </Modal>
   );
 };
