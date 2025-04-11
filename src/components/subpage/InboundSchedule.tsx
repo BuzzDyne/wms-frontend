@@ -1,13 +1,17 @@
 import { useState } from "react";
-import { Button, Calendar, Col, Row, Switch, Typography } from "antd";
+import { Button, Calendar, Col, Row, Switch, Typography, message } from "antd";
 import CardContent from "../common/CardContent";
 import ScheduleCreationModal from "../modal/ScheduleCreationModal";
 import { Dayjs } from "dayjs";
+import { useRequest } from "ahooks";
+import {
+  getInboundStatus,
+  toggleInboundStatus,
+} from "../../services/inboundService";
 
 const { Title, Text } = Typography;
 
 const InboundSchedule = () => {
-  const [scheduleRule, setScheduleRule] = useState<boolean>(false);
   const [isScheduleCreateModalOpen, setIsScheduleCreateModalOpen] =
     useState<boolean>(false);
 
@@ -20,8 +24,24 @@ const InboundSchedule = () => {
     { date: "20250110" },
   ];
 
-  const handleRuleSwitchClick = () => {
-    setScheduleRule(!scheduleRule);
+  const {
+    data: inboundActive,
+    loading: statusLoading,
+    refresh,
+  } = useRequest(getInboundStatus);
+
+  const { run: toggleStatus, loading: toggleLoading } = useRequest(
+    async (newStatus: "on" | "off") => {
+      await toggleInboundStatus(newStatus);
+      message.success(`Inbound status updated to ${newStatus}.`);
+      refresh();
+    },
+    { manual: true }
+  );
+
+  const handleRuleSwitchClick = async () => {
+    const newStatus = inboundActive ? "off" : "on";
+    await toggleStatus(newStatus);
   };
 
   const showModal = () => {
@@ -61,13 +81,17 @@ const InboundSchedule = () => {
           <Col>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <span>Rule:</span>
-              <Switch checked={scheduleRule} onChange={handleRuleSwitchClick} />
-              <span>{scheduleRule ? "On" : "Off"}</span>
+              <Switch
+                checked={inboundActive}
+                onChange={handleRuleSwitchClick}
+                loading={statusLoading || toggleLoading}
+              />
+              <span>{inboundActive ? "On" : "Off"}</span>
             </div>
           </Col>
           <Col>
             <Button
-              disabled={!scheduleRule}
+              disabled={!inboundActive || statusLoading || toggleLoading}
               className="solid-blue"
               onClick={showModal}
             >
@@ -77,7 +101,7 @@ const InboundSchedule = () => {
         </Row>
       </CardContent>
       <CardContent>
-        {scheduleRule ? (
+        {inboundActive ? (
           <Calendar disabledDate={disableDate} cellRender={dateCellRender} />
         ) : (
           <div style={{ textAlign: "center", padding: "20px" }}>
