@@ -74,3 +74,37 @@ export interface PicklistDashboardResponse {
   stocks: Stock[];
   unmapped_items: UnmappedItem[];
 }
+
+export interface TypeStockItemResponse {
+  id: number;
+  type_name: string;
+  type_value: string;
+  is_active: number;
+}
+
+export interface SizeStockItemResponse {
+  id: number;
+  size_name: string;
+  size_value: string;
+  is_active: number;
+}
+
+export interface ColorStockItemResponse {
+  id: number;
+  color_name: string;
+  color_hex: string;
+  is_active: number;
+}
+
+export interface CreateStockColorRequest {
+  color_name: string;
+  color_hex: string;
+}
+
+export interface CreateStockTypeRequest {
+  type_name: string;
+}
+export interface CreateStockSizeRequest {
+  size_name_start: string;
+  size_name_end?: string; // Made optional
+}

@@ -17,6 +17,12 @@ const ListPicklist = React.lazy(
 const InboundHistory = React.lazy(
   () => import("../components/subpage/InboundHistory")
 );
+const InventorySettingsTSC = React.lazy(
+  () => import("../components/subpage/InventorySettingsTSC")
+);
+const InventorySettingsMap = React.lazy(
+  () => import("../components/subpage/InventorySettingsMapping")
+);
 
 interface RouteConfig {
   path: string;
@@ -31,6 +37,8 @@ const routes: RouteConfig[] = [
   { path: "/list-picklist", element: ListPicklist },
   { path: "/new-picklist", element: NewPicklist },
   { path: "/inbound-history", element: InboundHistory },
+  { path: "/inventory-settings-tsc", element: InventorySettingsTSC },
+  { path: "/inventory-settings-mapping", element: InventorySettingsMap },
 ];
 
 export default routes;

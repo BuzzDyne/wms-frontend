@@ -75,8 +75,24 @@ export const ownerNavItems: MenuItem[] = [
       undefined,
       "/account-management"
     ),
-    getItem("Audit Log", "adm3", undefined, undefined, "/"),
-    getItem("Report", "adm4", undefined, undefined, "/"),
+    getItem("Inventory Settings", "adm3", undefined, [
+      getItem(
+        "Inventory Type/Size/Color",
+        "adm3-1",
+        undefined,
+        undefined,
+        "/inventory-settings-tsc"
+      ),
+      getItem(
+        "Inventory Mapping",
+        "adm3-2",
+        undefined,
+        undefined,
+        "/inventory-settings-mapping"
+      ),
+    ]),
+    getItem("Audit Log", "adm4", undefined, undefined, "/"),
+    getItem("Report", "adm5", undefined, undefined, "/"),
   ]),
 ];
 
