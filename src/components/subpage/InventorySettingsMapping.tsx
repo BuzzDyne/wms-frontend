@@ -1,60 +1,154 @@
 import React, { useState } from "react";
-import { Col, Row, Table, Typography, Button, Select } from "antd";
+import { Table, Typography, Button, message, Modal, Input, Space } from "antd";
 import CardContent from "../common/CardContent";
+import { useRequest } from "ahooks";
+import {
+  fetchStockMappings,
+  deleteStockMapping,
+} from "../../services/mappingServices";
 
 const { Title } = Typography;
-const { Option } = Select;
 
 const InventorySetting: React.FC = () => {
-  const [status, setStatus] = useState<string | undefined>(undefined);
+  const {
+    data: stockMappings,
+    loading,
+    refresh,
+  } = useRequest(fetchStockMappings);
 
-  const handleStatusChange = (value: string) => {
-    setStatus(value);
+  const [filters, setFilters] = useState({
+    stock_type: "",
+    stock_color: "",
+    stock_size: "",
+  });
+
+  const handleFilterChange = (key: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleFilterClick = () => {
-    // Dummy filter action
+  const resetFilters = () => {
+    setFilters({ stock_type: "", stock_color: "", stock_size: "" });
   };
 
-  const handleResetClick = () => {
-    setStatus(undefined);
+  const filteredData = stockMappings?.filter((item: any) => {
+    return (
+      (!filters.stock_type ||
+        item.stock_type
+          .toLowerCase()
+          .includes(filters.stock_type.toLowerCase())) &&
+      (!filters.stock_color ||
+        item.stock_color
+          .toLowerCase()
+          .includes(filters.stock_color.toLowerCase())) &&
+      (!filters.stock_size ||
+        item.stock_size
+          .toLowerCase()
+          .includes(filters.stock_size.toLowerCase()))
+    );
+  });
+
+  const handleDelete = (mappingId: number) => {
+    Modal.confirm({
+      title: "Are you sure you want to delete this mapping?",
+      content: "This action cannot be undone.",
+      okText: "Yes, Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      onOk: async () => {
+        try {
+          await deleteStockMapping(mappingId);
+          message.success("Mapping deleted successfully.");
+          refresh(); // Refresh the data
+        } catch (error) {
+          message.error("Failed to delete mapping.");
+        }
+      },
+    });
   };
 
   const columns = [
-    { title: "ID", dataIndex: "id", key: "id" },
+    // Removed Stock ID column
     {
-      title: "Inventory Mapping",
-      dataIndex: "inbound_date",
-      key: "inbound_date",
+      title: "Stock Type",
+      dataIndex: "stock_type",
+      key: "stock_type",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
+      title: "Stock Color",
+      dataIndex: "stock_color",
+      key: "stock_color",
     },
     {
-      title: "Actions",
-      key: "actions",
-      render: () => (
-        <span>
-          <Button size="small">View</Button>
-        </span>
-      ),
+      title: "Stock Size",
+      dataIndex: "stock_size",
+      key: "stock_size",
     },
   ];
 
-  const data = [
-    {
-      id: "1",
-      inbound_date: "2023-10-01",
-      status: "Completed",
-    },
-    {
-      id: "2",
-      inbound_date: "2023-10-02",
-      status: "Pending",
-    },
-  ];
+  const expandedRowRender = (record: any) => {
+    const innerColumns = [
+      { title: "Ecom Code", dataIndex: "ecom_code", key: "ecom_code" },
+      {
+        title: "Field 1",
+        dataIndex: "field1",
+        key: "field1",
+        render: (text: string) => (
+          <Typography.Text ellipsis={{ tooltip: text }}>{text}</Typography.Text>
+        ),
+      },
+      {
+        title: "Field 2",
+        dataIndex: "field2",
+        key: "field2",
+        render: (text: string) => (
+          <Typography.Text ellipsis={{ tooltip: text }}>{text}</Typography.Text>
+        ),
+      },
+      {
+        title: "Field 3",
+        dataIndex: "field3",
+        key: "field3",
+        render: (text: string) => (
+          <Typography.Text ellipsis={{ tooltip: text }}>{text}</Typography.Text>
+        ),
+      },
+      {
+        title: "Field 4",
+        dataIndex: "field4",
+        key: "field4",
+        render: (text: string) => (
+          <Typography.Text ellipsis={{ tooltip: text }}>{text}</Typography.Text>
+        ),
+      },
+      {
+        title: "Field 5",
+        dataIndex: "field5",
+        key: "field5",
+        render: (text: string) => (
+          <Typography.Text ellipsis={{ tooltip: text }}>{text}</Typography.Text>
+        ),
+      },
+      {
+        title: "Action",
+        key: "action",
+        render: (_: any, mapping: any) => (
+          <Button danger onClick={() => handleDelete(mapping.mapping_id)}>
+            Delete
+          </Button>
+        ),
+      },
+    ];
+
+    return (
+      <Table
+        dataSource={record.mappings}
+        columns={innerColumns}
+        pagination={false}
+        rowKey="mapping_id"
+        size="small"
+      />
+    );
+  };
 
   return (
     <>
@@ -62,41 +156,31 @@ const InventorySetting: React.FC = () => {
         Inventory Mapping
       </Title>
       <CardContent>
-        <Row gutter={[16, 16]}>
-          <Col span={8}>
-            <Select
-              placeholder="Select Status"
-              style={{ width: "100%" }}
-              onChange={handleStatusChange}
-              value={status}
-            >
-              <Option value="completed">Completed</Option>
-              <Option value="pending">Pending</Option>
-            </Select>
-          </Col>
-          <Col span={4}>
-            <Button
-              className="solid-blue"
-              onClick={handleFilterClick}
-              style={{ marginRight: 8 }}
-            >
-              Filter
-            </Button>
-            <Button onClick={handleResetClick}>Reset</Button>
-          </Col>
-        </Row>
-      </CardContent>
-      <CardContent>
+        <Space style={{ marginBottom: 16 }}>
+          <Input
+            placeholder="Search Stock Type"
+            value={filters.stock_type}
+            onChange={(e) => handleFilterChange("stock_type", e.target.value)}
+          />
+          <Input
+            placeholder="Search Stock Color"
+            value={filters.stock_color}
+            onChange={(e) => handleFilterChange("stock_color", e.target.value)}
+          />
+          <Input
+            placeholder="Search Stock Size"
+            value={filters.stock_size}
+            onChange={(e) => handleFilterChange("stock_size", e.target.value)}
+          />
+          <Button onClick={resetFilters}>Reset Filters</Button>
+        </Space>
         <Table
+          dataSource={filteredData}
           columns={columns}
-          dataSource={data}
-          pagination={{
-            current: 1,
-            pageSize: 10,
-            total: data.length,
-            showSizeChanger: true,
-          }}
-          rowKey="id"
+          expandable={{ expandedRowRender }}
+          loading={loading}
+          rowKey="stock_id"
+          size="small"
         />
       </CardContent>
     </>
