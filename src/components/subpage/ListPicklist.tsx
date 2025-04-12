@@ -149,7 +149,7 @@ const ListPicklist: React.FC = () => {
           <span>
             <Button size="small">Edit</Button>
 
-            {picklist_status === "ON_DRAFT" && (
+            {/* {picklist_status === "ON_DRAFT" && (
               <Button type="link">Draft</Button>
             )}
 
@@ -167,7 +167,7 @@ const ListPicklist: React.FC = () => {
 
             {picklist_status === "COMPLETED" && (
               <Button type="link">Completed</Button>
-            )}
+            )} */}
           </span>
         );
       },
