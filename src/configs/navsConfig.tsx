@@ -38,7 +38,7 @@ export const temporaryUserNavItems: MenuItem[] = [
 
 export const ownerNavItems: MenuItem[] = [
   getItem("Dashboard", "a1", <GoogleOutlined />, undefined, "/dashboard"),
-  getItem("Inventory", "a2", <ShopOutlined />, undefined, "/"),
+  getItem("Inventory", "a2", <ShopOutlined />, undefined, "/inventory"),
 
   getItem("Inbound", "inb", <TruckFilled />, [
     getItem(

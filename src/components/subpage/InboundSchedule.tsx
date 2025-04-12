@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { Button, Calendar, Col, Row, Switch, Typography, message } from "antd";
+import {
+  Button,
+  Calendar,
+  Col,
+  Row,
+  Switch,
+  Typography,
+  message,
+  Spin,
+} from "antd";
 import CardContent from "../common/CardContent";
 import ScheduleCreationModal from "../modal/ScheduleCreationModal";
 import DeleteConfirmationModal from "../../modals/DeleteConfirmationModal";
@@ -148,7 +157,11 @@ const InboundSchedule = () => {
         </Row>
       </CardContent>
       <CardContent>
-        {inboundActive ? (
+        {statusLoading || toggleLoading ? ( // Show spinner while status is loading
+          <div style={{ textAlign: "center", padding: "20px" }}>
+            <Spin size="large" />
+          </div>
+        ) : inboundActive ? (
           <Calendar mode="month" cellRender={dateCellRender} />
         ) : (
           <div style={{ textAlign: "center", padding: "20px" }}>

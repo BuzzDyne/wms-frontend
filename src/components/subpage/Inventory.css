@@ -1,0 +1,7 @@
+.custom-table .ant-table-cell {
+  border: 1px solid #555; /* Darker border for table cells */
+}
+
+.custom-table .ant-table {
+  border-bottom: 1px solid #555; /* Add a border to the bottom of the table */
+}
