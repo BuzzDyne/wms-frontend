@@ -11,6 +11,10 @@ export const formatDate = (date: string | null): string => {
   return date ? dayjs(date).format("YYYY-MM-DD") : "-";
 };
 
+export const formatDateVerbose = (date: string | null): string => {
+  return date ? dayjs(date).format("D MMMM YYYY") : "-";
+};
+
 export const prettyPicklistStatus = (status: string): JSX.Element => {
   const { label, color } = PICKLIST_STATUS_MAPPING[status] || {
     label: status,
