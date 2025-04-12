@@ -1,7 +1,14 @@
 .custom-table .ant-table-cell {
   border: 1px solid #555; /* Darker border for table cells */
+  padding: 4px 8px; /* Reduce padding for compactness */
+  font-size: 12px; /* Reduce font size for compactness */
 }
 
 .custom-table .ant-table {
   border-bottom: 1px solid #555; /* Add a border to the bottom of the table */
+}
+
+.custom-table .ant-table-thead > tr > th {
+  padding: 4px 8px; /* Reduce header cell padding */
+  font-size: 12px; /* Reduce header font size */
 }

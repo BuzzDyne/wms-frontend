@@ -1,9 +1,9 @@
 import React from "react";
-import { Button, Typography } from "antd";
+import { Button, Typography, Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 const Dashboard: React.FC = () => {
   const { setAuth } = useAuth();
@@ -21,15 +21,21 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <Title>Dashboard</Title>
-      <Button type="primary" onClick={handleGoToPicklist}>
-        Picklist Creation
-      </Button>
-      <br />
-      <br />
-      <Button type="primary" danger onClick={handleLogout}>
-        Logout
-      </Button>
+      <Title level={1} style={{ textAlign: "center", marginTop: "20%" }}>
+        Welcome to CartexBlanche Web
+      </Title>
+      <Paragraph
+        style={{ textAlign: "center", fontSize: "16px", marginTop: "16px" }}
+      >
+        Please select one of the menu from the sidebar.
+      </Paragraph>
+      <Row justify="center" style={{ marginTop: "64px" }}>
+        <Col>
+          <Button type="primary" danger onClick={handleLogout}>
+            Logout
+          </Button>
+        </Col>
+      </Row>
 
       {/* <br />
       <br />

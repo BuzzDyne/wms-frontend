@@ -24,6 +24,9 @@ const InventorySettingsMap = React.lazy(
   () => import("../components/subpage/InventorySettingsMapping")
 );
 const Inventory = React.lazy(() => import("../components/subpage/Inventory"));
+const InboundDetail = React.lazy(
+  () => import("../components/subpage/InboundDetail")
+);
 
 interface RouteConfig {
   path: string;
@@ -37,10 +40,11 @@ const routes: RouteConfig[] = [
   { path: "/account-management", element: AccountManagement },
   { path: "/list-picklist", element: ListPicklist },
   { path: "/new-picklist", element: NewPicklist },
-  { path: "/inbound-history", element: InboundHistory },
+  { path: "/inbound-list", element: InboundHistory },
   { path: "/inventory", element: Inventory },
   { path: "/inventory-settings-tsc", element: InventorySettingsTSC },
   { path: "/inventory-settings-mapping", element: InventorySettingsMap },
+  { path: "/inbound-list/detail/:id", element: InboundDetail },
 ];
 
 export default routes;

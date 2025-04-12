@@ -53,7 +53,7 @@ const CreateStockModal: React.FC<CreateStockModalProps> = ({
   return (
     <Modal
       title="Create New Stock"
-      visible={visible}
+      open={visible}
       onCancel={onCancel}
       onOk={() => form.submit()}
       confirmLoading={loadingTypes || loadingColors || loadingSizes}

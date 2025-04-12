@@ -48,13 +48,7 @@ export const ownerNavItems: MenuItem[] = [
       undefined,
       "/inbound-schedule"
     ),
-    getItem(
-      "Inbound History",
-      "inb3",
-      undefined,
-      undefined,
-      "/inbound-history"
-    ),
+    getItem("Inbound List", "inb3", undefined, undefined, "/inbound-list"),
   ]),
 
   getItem("Outbound", "out", <UploadOutlined />, [

@@ -34,3 +34,16 @@ export const createInboundSchedule = async (schedule: {
 }): Promise<void> => {
   await axiosPrivate.post("/inbound/schedules", schedule);
 };
+
+export const fetchInbounds = async () => {
+  const response = await axiosPrivate.get("/inbound");
+  return response.data.data;
+};
+
+export const createInbound = async (payload: {
+  supplier_name: string;
+  notes: string;
+}): Promise<{ inbound_id: number }> => {
+  const response = await axiosPrivate.post("/inbound/", payload);
+  return response.data.data;
+};
