@@ -2,7 +2,7 @@ import { Modal } from "antd";
 import React, { useState } from "react";
 
 interface ConfirmModalProps {
-  //   modalType: string;
+  modalType?: "positive" | "negative";
   isOpen: boolean;
   onSubmit: () => void;
   onClose: () => void;
@@ -13,7 +13,7 @@ interface ConfirmModalProps {
 }
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
-  //   modalType,
+  modalType = "positive",
   isOpen,
   onSubmit,
   onClose,
@@ -38,7 +38,10 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       confirmLoading={isLoading}
       okText={okText}
       cancelText={cancelText}
-      okButtonProps={{ type: "default", className: "solid-red" }}
+      okButtonProps={{
+        type: "default",
+        className: modalType === "positive" ? "solid-green" : "solid-red",
+      }}
     >
       <p>{bodyText}</p>
     </Modal>

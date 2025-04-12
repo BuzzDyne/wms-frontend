@@ -4,6 +4,7 @@ import { ConfigProvider, Spin, App as AntdApp } from "antd";
 import { AuthProvider } from "./context/AuthProvider";
 import { createStyles } from "antd-style";
 import "@fontsource/inter";
+import { setupInterceptors } from "./api/setupInterceptors";
 
 const loadingSpinner = (
   <Spin
@@ -154,6 +155,7 @@ const PageLogin = React.lazy(() => import("./pages/PageLogin"));
 
 const App: React.FC = () => {
   const { styles } = useStyle();
+  setupInterceptors();
   return (
     <ConfigProvider
       button={{

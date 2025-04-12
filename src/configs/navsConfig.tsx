@@ -38,7 +38,7 @@ export const temporaryUserNavItems: MenuItem[] = [
 
 export const ownerNavItems: MenuItem[] = [
   getItem("Dashboard", "a1", <GoogleOutlined />, undefined, "/dashboard"),
-  getItem("Inventory", "a2", <ShopOutlined />, undefined, "/"),
+  getItem("Inventory", "a2", <ShopOutlined />, undefined, "/inventory"),
 
   getItem("Inbound", "inb", <TruckFilled />, [
     getItem(
@@ -48,13 +48,7 @@ export const ownerNavItems: MenuItem[] = [
       undefined,
       "/inbound-schedule"
     ),
-    getItem(
-      "Inbound History",
-      "inb3",
-      undefined,
-      undefined,
-      "/inbound-history"
-    ),
+    getItem("Inbound List", "inb3", undefined, undefined, "/inbound-list"),
   ]),
 
   getItem("Outbound", "out", <UploadOutlined />, [
@@ -75,8 +69,24 @@ export const ownerNavItems: MenuItem[] = [
       undefined,
       "/account-management"
     ),
-    getItem("Audit Log", "adm3", undefined, undefined, "/"),
-    getItem("Report", "adm4", undefined, undefined, "/"),
+    getItem("Inventory Settings", "adm3", undefined, [
+      getItem(
+        "Inventory Type/Size/Color",
+        "adm3-1",
+        undefined,
+        undefined,
+        "/inventory-settings-tsc"
+      ),
+      getItem(
+        "Inventory Mapping",
+        "adm3-2",
+        undefined,
+        undefined,
+        "/inventory-settings-mapping"
+      ),
+    ]),
+    getItem("Audit Log", "adm4", undefined, undefined, "/"),
+    getItem("Report", "adm5", undefined, undefined, "/"),
   ]),
 ];
 

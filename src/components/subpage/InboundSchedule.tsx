@@ -1,27 +1,71 @@
 import { useState } from "react";
-import { Button, Calendar, Col, Row, Switch, Typography } from "antd";
+import {
+  Button,
+  Calendar,
+  Col,
+  Row,
+  Switch,
+  Typography,
+  message,
+  Spin,
+} from "antd";
 import CardContent from "../common/CardContent";
 import ScheduleCreationModal from "../modal/ScheduleCreationModal";
-import { Dayjs } from "dayjs";
+import DeleteConfirmationModal from "../../modals/DeleteConfirmationModal";
+import dayjs, { Dayjs } from "dayjs";
+import { useRequest } from "ahooks";
+import {
+  getInboundStatus,
+  toggleInboundStatus,
+  getInboundSchedules,
+  deleteInboundSchedule,
+} from "../../services/inboundService";
 
 const { Title, Text } = Typography;
 
 const InboundSchedule = () => {
-  const [scheduleRule, setScheduleRule] = useState<boolean>(false);
   const [isScheduleCreateModalOpen, setIsScheduleCreateModalOpen] =
     useState<boolean>(false);
+  const [selectedEvent, setSelectedEvent] = useState<{
+    id: number;
+    notes: string;
+    schedule_date: string;
+  } | null>(null);
 
-  // Dummy data for disabled dates in YYYYMMDD format
-  const disabledDates = ["20250101", "20250105", "20250110"];
+  const currentYear = dayjs().year();
 
-  const events = [
-    { date: "20250101" },
-    { date: "20250105" },
-    { date: "20250110" },
-  ];
+  const {
+    data: inboundActive,
+    loading: statusLoading,
+    refresh,
+  } = useRequest(getInboundStatus);
 
-  const handleRuleSwitchClick = () => {
-    setScheduleRule(!scheduleRule);
+  const { run: toggleStatus, loading: toggleLoading } = useRequest(
+    async (newStatus: "on" | "off") => {
+      await toggleInboundStatus(newStatus);
+      message.success(`Inbound status updated to ${newStatus}.`);
+      refresh();
+      refreshSchedules();
+    },
+    { manual: true }
+  );
+
+  const { data: schedules, refresh: refreshSchedules } = useRequest(() =>
+    getInboundSchedules(currentYear)
+  );
+
+  const { run: deleteSchedule, loading: deleteLoading } = useRequest(
+    async (id: number) => {
+      await deleteInboundSchedule(id);
+      message.success("Schedule deleted successfully.");
+      refreshSchedules();
+    },
+    { manual: true }
+  );
+
+  const handleRuleSwitchClick = async () => {
+    const newStatus = inboundActive ? "off" : "on";
+    await toggleStatus(newStatus);
   };
 
   const showModal = () => {
@@ -30,25 +74,57 @@ const InboundSchedule = () => {
 
   const handleCancel = () => {
     setIsScheduleCreateModalOpen(false);
+    refreshSchedules();
   };
 
-  const disableDate = (current: Dayjs) => {
-    return disabledDates.includes(current.format("YYYYMMDD"));
+  const handleEventClick = (event: {
+    id: number;
+    notes: string;
+    schedule_date: string;
+  }) => {
+    setSelectedEvent(event);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (selectedEvent) {
+      await deleteSchedule(selectedEvent.id);
+      setSelectedEvent(null);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setSelectedEvent(null);
   };
 
   const dateCellRender = (current: Dayjs) => {
-    const event = events.find((e) => e.date === current.format("YYYYMMDD"));
-    return event ? (
-      <div
-        style={{
-          backgroundColor: "#f0f0f0",
-          padding: "5px",
-          borderRadius: "4px",
-        }}
-      >
-        <Text>Scheduled Inbound</Text>
+    const events = schedules?.filter(
+      (schedule) => schedule.schedule_date === current.format("YYYYMMDD")
+    );
+    return events && events.length > 0 ? (
+      <div>
+        {events.map((event) => (
+          <div
+            key={event.id}
+            style={{
+              backgroundColor: "#0086ff",
+              padding: "5px",
+              borderRadius: "4px",
+              cursor: "pointer",
+              marginBottom: "5px",
+              textAlign: "center", // Center-align text
+              color: "white", // Set text color to white
+            }}
+            onClick={() => handleEventClick(event)}
+          >
+            <Text>{event.notes}</Text>
+          </div>
+        ))}
       </div>
     ) : null;
+  };
+
+  const isDateDisabled = (current: Dayjs | null): boolean => {
+    return current ? current.isBefore(dayjs(), "day") : false;
   };
 
   return (
@@ -61,13 +137,17 @@ const InboundSchedule = () => {
           <Col>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <span>Rule:</span>
-              <Switch checked={scheduleRule} onChange={handleRuleSwitchClick} />
-              <span>{scheduleRule ? "On" : "Off"}</span>
+              <Switch
+                checked={inboundActive}
+                onChange={handleRuleSwitchClick}
+                loading={statusLoading || toggleLoading}
+              />
+              <span>{inboundActive ? "On" : "Off"}</span>
             </div>
           </Col>
           <Col>
             <Button
-              disabled={!scheduleRule}
+              disabled={!inboundActive || statusLoading || toggleLoading}
               className="solid-blue"
               onClick={showModal}
             >
@@ -77,8 +157,12 @@ const InboundSchedule = () => {
         </Row>
       </CardContent>
       <CardContent>
-        {scheduleRule ? (
-          <Calendar disabledDate={disableDate} cellRender={dateCellRender} />
+        {statusLoading || toggleLoading ? ( // Show spinner while status is loading
+          <div style={{ textAlign: "center", padding: "20px" }}>
+            <Spin size="large" />
+          </div>
+        ) : inboundActive ? (
+          <Calendar mode="month" cellRender={dateCellRender} />
         ) : (
           <div style={{ textAlign: "center", padding: "20px" }}>
             <Text strong style={{ fontSize: "16px" }}>
@@ -91,7 +175,16 @@ const InboundSchedule = () => {
       <ScheduleCreationModal
         isOpen={isScheduleCreateModalOpen}
         onClose={handleCancel}
-        disabledDates={disabledDates} // Pass the disabled dates
+        disabledDate={isDateDisabled} // Pass the function to disable past dates
+      />
+
+      <DeleteConfirmationModal
+        visible={!!selectedEvent}
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        confirmLoading={deleteLoading}
+        itemName={selectedEvent?.notes || ""}
+        scheduleDate={selectedEvent?.schedule_date || ""}
       />
     </>
   );

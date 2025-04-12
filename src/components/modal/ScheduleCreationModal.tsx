@@ -4,15 +4,16 @@ import { Dayjs } from "dayjs";
 import { TOAST_DURATION } from "../../utils/constant";
 import { useTranslation } from "react-i18next";
 import { BasicModalProps } from "../../models/types";
+import { createInboundSchedule } from "../../services/inboundService";
 
 interface ScheduleCreationModalProps extends BasicModalProps {
-  disabledDates: string[]; // Dates in YYYYMMDD format>
+  disabledDate: (current: Dayjs | null) => boolean; // Function to disable dates
 }
 
 const ScheduleCreationModal: React.FC<ScheduleCreationModalProps> = ({
   isOpen,
   onClose,
-  disabledDates,
+  disabledDate,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
@@ -28,7 +29,7 @@ const ScheduleCreationModal: React.FC<ScheduleCreationModalProps> = ({
     setNotes(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedDate || !notes.trim()) {
       message.error(
         "Please select a date and provide notes before submitting.",
@@ -38,12 +39,21 @@ const ScheduleCreationModal: React.FC<ScheduleCreationModalProps> = ({
     }
 
     setIsLoading(true);
-    setTimeout(() => {
-      console.log("Date:", selectedDate.format("YYYY-MM-DD"));
-      console.log("Notes:", notes); // TODO BE
-      setIsLoading(false);
+    try {
+      await createInboundSchedule({
+        schedule_date: selectedDate.format("YYYYMMDD"),
+        notes: notes.trim(),
+      });
+      message.success("Schedule created successfully.", TOAST_DURATION);
       closeSelf();
-    }, 1000);
+    } catch (error) {
+      message.error(
+        "Failed to create schedule. Please try again.",
+        TOAST_DURATION
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const closeSelf = () => {
@@ -51,10 +61,6 @@ const ScheduleCreationModal: React.FC<ScheduleCreationModalProps> = ({
     setIsLoading(false);
     setSelectedDate(null);
     setNotes("");
-  };
-
-  const disabledDate = (current: Dayjs) => {
-    return disabledDates.some((date) => current.isSame(date, "day"));
   };
 
   return (
@@ -76,7 +82,7 @@ const ScheduleCreationModal: React.FC<ScheduleCreationModalProps> = ({
             format="YYYY-MM-DD"
             style={{ width: "100%" }}
             placeholder={t("inbound-schedule.modal.field.date.placeholder")}
-            disabledDate={disabledDate} // Disable specified dates
+            disabledDate={disabledDate} // Use the passed function to disable dates
           />
         </Form.Item>
         <Form.Item

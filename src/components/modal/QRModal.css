@@ -1,0 +1,24 @@
+.qr-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px; /* Add spacing between video and result text */
+  height: 400px; /* Set a fixed height for the modal content */
+}
+
+.responsive-video {
+  width: 100%;
+  max-width: 400px; /* Adjust max width for better scaling */
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: block;
+}
+
+.qr-result-text {
+  font-size: 16px; /* Adjust font size for better readability */
+  color: #008000; /* Use a green color for success */
+  text-align: center;
+  margin: 0;
+}

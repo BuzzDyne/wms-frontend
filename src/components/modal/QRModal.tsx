@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Modal, Button, Typography, Row, Col } from "antd";
 import { BasicModalProps } from "../../models/types";
 import QrScanner from "qr-scanner";
+import "./QRModal.css"; // Import the new CSS file
 
 const { Text } = Typography;
 
@@ -45,40 +46,19 @@ const QRModal: React.FC<BasicModalProps> = ({ isOpen, onClose }) => {
   return (
     <Modal
       title="Scan QR Code"
-      width={1400}
+      width={600} // Adjust modal width for better presentation
       open={isOpen}
       onOk={closeSelf}
       onCancel={closeSelf}
       confirmLoading={isLoading}
       footer={null}
+      bodyStyle={{ padding: "20px" }} // Add padding for better spacing
     >
-      {/* <Row>
-        <Col span={24}>
-          <Button
-            style={{ marginTop: 10 }}
-            onClick={toggleScanning}
-            type="primary"
-          >
-            {isScanning ? "Pause Scanning" : "Resume Scanning"}
-          </Button>
-        </Col>
-        <Col span={24}>
-          <Text style={{ marginTop: 10 }}>Scanned QR Content: {qrResult}</Text>
-        </Col>
-        <Col span={24} style={{ minHeight: "478px" }}>
-          <Scanner
-            styles={{ video: { width: "100%" } }}
-            onError={handleError}
-            onScan={handleScan}
-            paused={!isScanning}
-          />
-        </Col>
-      </Row> */}
-      <video
-        ref={videoRef}
-        className="w-full max-w-xs aspect-square rounded-lg"
-      />
-      {qrResult && <p className="mt-4 text-green-600">QR Code: {qrResult}</p>}
+      <div className="qr-modal-content">
+        {/* Add a container for layout */}
+        <video ref={videoRef} className="responsive-video" />
+        {qrResult && <p className="qr-result-text">QR Code: {qrResult}</p>}
+      </div>
     </Modal>
   );
 };
